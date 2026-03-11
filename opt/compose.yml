@@ -3,8 +3,8 @@ services:
     image: ${DOCKER_IMAGE}
     container_name: mikkis-mess
     restart: unless-stopped
-    ports:
-      - "${PORT:-3001}:3001"
+    expose:
+      - "3001"
     networks:
       - recoverysky
     volumes:
