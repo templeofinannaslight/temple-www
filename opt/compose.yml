@@ -1,14 +1,14 @@
 services:
-  mikkis-mess:
+  blog:
     image: ${DOCKER_IMAGE}
-    container_name: mikkis-mess
+    container_name: blog
     restart: unless-stopped
     expose:
       - "3001"
     networks:
       - recoverysky
     volumes:
-      - /opt/containers/mikkis-mess:/container:ro
+      - /opt/containers/blog:/container:ro
       - /etc/pki/tls/certs/ca-bundle.crt:/container/ca-bundle.crt:ro
     environment:
       - NODE_EXTRA_CA_CERTS=/container/ca-bundle.crt
