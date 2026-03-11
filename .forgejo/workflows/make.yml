@@ -103,7 +103,7 @@ jobs:
           type: deploy
           action: deploy_container
           instance: athena
-          service: recoverysky-blog
+          service: blog
           zone: ${{ env.AWS_REGION }}
           environment: ${{ env.ENV }}
 
@@ -116,6 +116,6 @@ jobs:
           streams: ci
           type: build
           action: failure
-          service: recoverysky-blog
+          service: blog
           instance: athena
           environment: ${{ env.ENV }}
