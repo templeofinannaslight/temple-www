@@ -1,0 +1,45 @@
+services:
+  mikkis-mess:
+    image: ${DOCKER_IMAGE}
+    container_name: mikkis-mess
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3001}:3001"
+    networks:
+      - recoverysky
+    volumes:
+      - /opt/containers/mikkis-mess:/container:ro
+      - /etc/pki/tls/certs/ca-bundle.crt:/container/ca-bundle.crt:ro
+    environment:
+      - NODE_EXTRA_CA_CERTS=/container/ca-bundle.crt
+      - NODE_ENV=production
+      - PORT=3001
+      - DIRECTUS_URL=${DIRECTUS_URL}
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3001/health",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${DOCKER_CPUS_LIMIT}
+          memory: ${DOCKER_MEMORY_LIMIT}
+        reservations:
+          cpus: ${DOCKER_CPUS_RESERVATION}
+          memory: ${DOCKER_MEMORY_RESERVATION}
+
+networks:
+  recoverysky:
+    external: true

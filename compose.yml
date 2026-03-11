@@ -1,0 +1,40 @@
+services:
+  recoverysky-blog:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: recoverysky-blog:latest
+    container_name: recoverysky-blog
+    restart: unless-stopped
+    ports:
+      - "${PORT:-3001}:3001"
+    networks:
+      - recoverysky
+    volumes:
+      - /opt/containers/recoverysky-blog:/container:ro
+      - /etc/pki/tls/certs/ca-bundle.crt:/container/ca-bundle.crt
+    environment:
+      - NODE_EXTRA_CA_CERTS=/container/ca-bundle.crt
+      - NODE_ENV=production
+      - PORT=3001
+      - DIRECTUS_URL=${DIRECTUS_URL}
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+      - CORS_ORIGIN=${CORS_ORIGIN:-*}
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3001/health",
+        ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
+
+networks:
+  recoverysky:
+    external: true
