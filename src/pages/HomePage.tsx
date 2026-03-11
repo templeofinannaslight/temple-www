@@ -32,7 +32,10 @@ export function HomePage() {
       <div className="max-w-3xl mx-auto">
         <div className="mb-10">
           <h1 className="text-4xl font-bold tracking-tight mb-2">
-            <span className="bg-gradient-to-r from-brand to-accent bg-clip-text text-transparent">
+            <span
+              className="bg-clip-text text-transparent"
+              style={{ backgroundImage: "linear-gradient(to right, #c30a68, #f472b6, #7dd3fc, #26619c)" }}
+            >
               RecoverySky
             </span>{" "}
             Blog

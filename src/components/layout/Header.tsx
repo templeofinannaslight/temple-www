@@ -5,12 +5,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-gray-950/80 backdrop-blur-md border-b border-gray-800/50">
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between py-4">
           <Link to="/" className="flex items-center">
             <img
               src={logo}
               alt="RecoverySky"
-              className="h-8 w-auto"
+              className="h-24 w-auto"
             />
           </Link>
           <nav className="flex items-center gap-6">
