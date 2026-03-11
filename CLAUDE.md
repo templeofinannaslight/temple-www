@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Mikki's Mess** is a blog frontend built with Vite + React and TypeScript, with an Express API proxy server that connects to a Directus CMS instance at `https://content.rso`.
+**RecoverySky Blog** — a corporate blog built with Vite + React + TypeScript, backed by an Express API proxy to a Directus CMS at `https://content.rso`.
 
 ## Commands
 
@@ -21,58 +21,69 @@ pnpm lint             # Run ESLint
 
 ### Two-Server Pattern
 
-1. **Express Proxy Server** (`server/index.js` on port 3001):
-   - Proxies `/api/:collection` requests to Directus `/items/:collection`
-   - Injects `Authorization: Bearer` token for authenticated Directus access
-   - Keeps Directus token server-side only (not exposed to browser)
-   - Health check at `/health`
+**Express Proxy** (`server/index.js`, port 3001) sits between the browser and Directus. It injects the Bearer token server-side and rewrites Directus asset URLs to `/api/assets/`. Routes:
+- `GET /api/:collection` — list items
+- `GET /api/:collection/:id` — single item (numeric ID)
+- `GET /api/assets/:id` — proxied Directus files with image transforms
+- `GET /health` — health check
 
-2. **Vite React Client** (`src/` on port 5173):
-   - React SPA with Tailwind CSS 4
-   - In dev, Vite proxies `/api` requests to Express (see `vite.config.ts`)
-   - Fetches from `/api/Mikkis_Mess` collection
+**Vite React Client** (`src/`, port 5173) is an SPA with React Router. In dev, Vite proxies `/api` to Express (`vite.config.ts`). In production, Express serves the built static files from `dist/` with SPA fallback.
 
-### Request Flow (Development)
 ```
 Browser → Vite (5173) → /api proxy → Express (3001) → Directus CMS
 ```
 
-### Key Files
+### Client Architecture
 
-- `server/index.js` - Express proxy with Directus authentication
-- `src/App.tsx` - Main blog component, fetches and displays posts
-- `src/components/ui/` - shadcn/ui components (Card)
-- `vite.config.ts` - Path aliases (`@/`) and dev proxy config
+**Routing** (`src/App.tsx`): React Router with `RootLayout` wrapper.
+- `/` — `HomePage` (blog listing with search, tags, pagination, sort)
+- `/post/:id` and `/post/:id/:slug` — `PostPage` (individual article)
+- `*` — `NotFoundPage`
+
+**Data flow**: `src/lib/api.ts` contains all fetch functions (`fetchPosts`, `fetchPost`, `fetchAllTags`). The collection name and API URL are in `src/lib/constants.ts`. Custom hooks (`src/hooks/usePosts.ts`, `src/hooks/useTags.ts`) wrap API calls with React state.
+
+**Tag filtering is client-side** — Directus doesn't support JSON array queries, so when filtering by tag, all posts are fetched and filtered in the browser.
+
+### Directus Collection
+
+Collection: `RecoverySky_Blog` (defined in `src/lib/constants.ts`)
+
+Post fields: `id`, `status`, `title`, `slug`, `content` (WYSIWYG), `excerpt`, `featured_image` (file UUID), `tags` (JSON array), `author`, `written_date`, `date_created`, `date_updated`
+
+TypeScript interface: `src/lib/types.ts`
+
+Filter for published posts: `filter[status][_eq]=published`
+
+## Brand & Styling
+
+**Tailwind CSS 4** with `@tailwindcss/postcss` plugin (not v3). Brand colors defined via `@theme` in `src/index.css`:
+- `brand` / `brand-light` / `brand-dark` — magenta (#c30a68)
+- `accent` / `accent-light` / `accent-dark` — blue (#26619c)
+
+Use `bg-brand`, `text-brand-light`, `border-accent`, etc. in Tailwind classes.
+
+Dark theme: `bg-gray-950` base, `border-gray-800` borders, `text-gray-100/300/500` text hierarchy.
+
+**shadcn/ui** components in `src/components/ui/` with `cn()` utility from `src/lib/utils.ts`. Icons from `lucide-react`.
 
 ## Environment Variables
 
-| Variable | Server/Client | Description |
-|----------|---------------|-------------|
+| Variable | Scope | Description |
+|---|---|---|
 | `DIRECTUS_URL` | Server | Directus CMS base URL |
 | `DIRECTUS_TOKEN` | Server | Directus API bearer token |
 | `PORT` | Server | Express port (default: 3001) |
 | `CORS_ORIGIN` | Server | Allowed frontend origin |
-| `VITE_API_URL` | Client | API base path (default: `/api`) |
-
-## Directus Collection Schema
-
-The `Mikkis_Mess` collection has:
-- `id`, `title`, `content`, `date_created`, `date_updated`, `status`
-
-Filter for published posts: `filter[status][_eq]=published`
-
-## Tailwind CSS 4
-
-Uses `@tailwindcss/postcss` plugin (not the v3 `tailwindcss` plugin). PostCSS config is in `postcss.config.js`.
 
 ## Docker
-
-Single container serves both API and static files in production:
 
 ```bash
 docker compose up -d              # Start container
 docker compose up -d --build      # Rebuild and start
-docker compose logs -f            # View logs
 ```
 
-In production, Express serves the built Vite static files and handles `/api` routes.
+Single container serves both API and static files. Service name: `recoverysky-blog`. Deployed via Forgejo CI to AWS ECR.
+
+## Path Alias
+
+`@/` maps to `./src/` — configured in both `vite.config.ts` and `tsconfig.json`.
