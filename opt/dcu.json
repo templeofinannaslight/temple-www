@@ -1,9 +1,5 @@
 {
-  "name": "Mikki's Mess",
-  "description": "Starting Docker Compose services for Mikki's Mess",
-  "vault": [
-    "docker-config:MikkisMess",
-    "app-config:MikkisMess",
-    "app-secrets:MikkisMess/JSON"
-  ]
+  "name": "Blog",
+  "description": "Starting Docker Compose services for Blog",
+  "vault": ["docker-config:Blog", "app-config:Blog", "app-secrets:Blog/JSON"]
 }
