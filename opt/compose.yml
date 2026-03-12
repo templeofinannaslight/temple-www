@@ -16,6 +16,7 @@ services:
       - PORT=3001
       - DIRECTUS_URL=${DIRECTUS_URL}
       - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+      - DIRECTUS_COLLECTION=${DIRECTUS_COLLECTION}
       - CORS_ORIGIN=${CORS_ORIGIN:-*}
     healthcheck:
       test:
