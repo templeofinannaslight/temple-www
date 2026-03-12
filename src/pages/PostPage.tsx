@@ -61,8 +61,8 @@ export function PostPage() {
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto">
           <Link
-            to="/"
-            className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 transition-colors mb-8"
+            to="/blog"
+            className="inline-flex items-center gap-1.5 text-sm text-gray-300 hover:text-white transition-colors mb-8"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to blog
@@ -83,59 +83,64 @@ export function PostPage() {
     <div className="container mx-auto px-4 py-12">
       <article className="max-w-3xl mx-auto">
         <Link
-          to="/"
-          className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 transition-colors mb-8"
+          to="/blog"
+          className="inline-flex items-center gap-1.5 text-sm text-gray-300 hover:text-white transition-colors mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to blog
         </Link>
 
-        {post.featured_image && (
-          <img
-            src={`/api/assets/${post.featured_image}?width=1200&height=600&fit=cover`}
-            alt={post.title}
-            className="w-full h-64 sm:h-80 object-cover rounded-lg mb-8"
-          />
-        )}
-
-        <header className="mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-100 mb-4">
-            {post.title}
-          </h1>
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-500">
-            <span className="inline-flex items-center gap-1.5">
-              <Calendar className="w-3.5 h-3.5" />
-              {formatDate(displayDate)}
-            </span>
-            {post.author && <span>by {post.author}</span>}
-          </div>
-          {post.tags && post.tags.length > 0 && (
-            <div className="flex flex-wrap gap-1.5 mt-4">
-              {post.tags.map((tag) => (
-                <Link
-                  key={tag}
-                  to={`/?tag=${encodeURIComponent(tag)}`}
-                  className="text-xs px-2 py-0.5 bg-brand/10 text-brand-light rounded-full border border-brand/20 hover:bg-brand hover:text-white transition-colors"
-                >
-                  {tag}
-                </Link>
-              ))}
-            </div>
+        <div className="bg-accent/30 border-2 border-accent-dark rounded-2xl shadow-[0_0_20px_#26619c70] overflow-hidden">
+          {post.featured_image && (
+            <img
+              src={`/api/assets/${post.featured_image}?width=1200&height=600&fit=cover`}
+              alt={post.title}
+              className="w-full h-64 sm:h-80 object-cover"
+            />
           )}
-        </header>
 
-        <div
-          className="prose prose-invert prose-lg max-w-none
-            prose-headings:text-gray-100 prose-headings:font-semibold
-            prose-p:text-gray-300 prose-p:leading-relaxed
-            prose-a:text-brand-light prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-gray-200
-            prose-code:text-brand-light prose-code:bg-gray-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
-            prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
-            prose-blockquote:border-brand/50 prose-blockquote:text-gray-400
-            prose-img:rounded-lg"
-          dangerouslySetInnerHTML={{ __html: post.content }}
-        />
+          <div className="p-8 sm:p-12">
+            <header className="mb-8">
+              <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">
+                {post.title}
+              </h1>
+              <div className="flex flex-wrap items-center gap-4 text-sm text-gray-300">
+                <span className="inline-flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5" />
+                  {formatDate(displayDate)}
+                </span>
+                {post.author && <span>by {post.author}</span>}
+              </div>
+              {post.tags && post.tags.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-4">
+                  {post.tags.map((tag) => (
+                    <Link
+                      key={tag}
+                      to={`/blog?tag=${encodeURIComponent(tag)}`}
+                      className="text-xs px-2 py-0.5 bg-brand/10 text-brand-light rounded-full border-2 border-accent-dark hover:border-accent-light hover:bg-brand hover:text-white transition-all"
+                    >
+                      {tag}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </header>
+
+            <div
+              className="prose prose-invert prose-lg max-w-none
+                prose-headings:text-gray-100 prose-headings:font-semibold
+                prose-p:text-gray-200 prose-p:leading-relaxed
+                prose-a:text-brand-light prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-white
+                prose-code:text-brand-light prose-code:bg-gray-900 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+                prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
+                prose-blockquote:border-brand/50 prose-blockquote:text-gray-300
+                prose-img:rounded-lg
+                prose-li:text-gray-200"
+              dangerouslySetInnerHTML={{ __html: post.content }}
+            />
+          </div>
+        </div>
       </article>
     </div>
   );
