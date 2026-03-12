@@ -40,7 +40,7 @@ export function HomePage() {
             </span>{" "}
             Blog
           </h1>
-          <p className="text-gray-500">
+          <p className="text-gray-300">
             Insights, updates, and stories from our team.
           </p>
         </div>
@@ -63,7 +63,7 @@ export function HomePage() {
 
         {!loading && !error && totalCount > 0 && (
           <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-300">
               {pageSize === -1 ? (
                 <>Showing all {totalCount} posts</>
               ) : (
@@ -97,7 +97,7 @@ export function HomePage() {
 
         {!loading && !error && totalCount > 0 && pageSize !== -1 && (
           <div className="mt-8 flex items-center justify-between">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm text-gray-300">
               Page {currentPage} of {totalPages}
             </p>
             <Pagination

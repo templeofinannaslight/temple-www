@@ -37,7 +37,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-900 border border-gray-800 rounded-lg hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/25 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
         Prev
       </button>
@@ -45,17 +45,17 @@ export function Pagination({
       <div className="flex items-center gap-1 mx-2">
         {getPageNumbers().map((page, idx) =>
           page === "..." ? (
-            <span key={`ellipsis-${idx}`} className="px-2 text-gray-600">
+            <span key={`ellipsis-${idx}`} className="px-2 text-gray-400">
               ...
             </span>
           ) : (
             <button
               key={page}
               onClick={() => onPageChange(page as number)}
-              className={`w-10 h-10 text-sm font-medium rounded-lg transition-colors ${
+              className={`w-10 h-10 text-sm font-medium rounded-lg transition-all ${
                 currentPage === page
-                  ? "bg-brand text-white border border-brand"
-                  : "text-gray-300 bg-gray-900 border border-gray-800 hover:bg-gray-800"
+                  ? "bg-brand text-white border-2 border-accent-light shadow-[0_0_25px_#26619ca0]"
+                  : "text-gray-100 bg-accent/25 border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0]"
               }`}
             >
               {page}
@@ -67,7 +67,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-2 text-sm font-medium text-gray-300 bg-gray-900 border border-gray-800 rounded-lg hover:bg-gray-800 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/25 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
         Next
       </button>

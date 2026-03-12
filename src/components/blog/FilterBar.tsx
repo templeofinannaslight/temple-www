@@ -42,15 +42,15 @@ export function FilterBar({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search posts..."
-              className="w-full px-4 py-2.5 pl-10 bg-gray-900 border border-gray-800 rounded-lg text-gray-200 placeholder-gray-600 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-colors"
+              className="w-full px-4 py-2.5 pl-10 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all"
             />
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
         </form>
 
         <button
           onClick={onSortChange}
-          className="flex items-center gap-2 px-4 py-2.5 bg-gray-900 border border-gray-800 rounded-lg text-gray-400 hover:text-gray-200 hover:border-gray-700 transition-colors whitespace-nowrap"
+          className="flex items-center gap-2 px-4 py-2.5 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 hover:text-white hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all whitespace-nowrap"
         >
           <ArrowUpDown className="w-4 h-4" />
           {sortOrder === "asc" ? "Oldest First" : "Newest First"}
@@ -59,7 +59,7 @@ export function FilterBar({
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="px-4 py-2.5 bg-gray-900 border border-gray-800 rounded-lg text-gray-400 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/50 transition-colors cursor-pointer"
+          className="px-4 py-2.5 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all cursor-pointer"
         >
           {PAGE_SIZE_OPTIONS.map((size) => (
             <option key={size} value={size}>
@@ -71,10 +71,10 @@ export function FilterBar({
 
       {allTags.length > 0 && (
         <div className="flex gap-3">
-          <div className="flex-1 bg-gray-900 border border-gray-800 rounded-lg overflow-hidden">
+          <div className="flex-1 bg-accent/25 border-2 border-accent-dark rounded-lg overflow-hidden">
             <button
               onClick={() => setTagsExpanded(!tagsExpanded)}
-              className="w-full flex items-center justify-between px-4 py-2.5 text-gray-400 hover:text-gray-200 transition-colors"
+              className="w-full flex items-center justify-between px-4 py-2.5 text-gray-200 hover:text-white transition-colors"
             >
               <span className="flex items-center gap-2">
                 <Tag className="w-3.5 h-3.5" />
@@ -100,17 +100,17 @@ export function FilterBar({
               </svg>
             </button>
             {tagsExpanded && (
-              <div className="px-4 pb-3 pt-2 border-t border-gray-800">
+              <div className="px-4 pb-3 pt-2 border-t-2 border-accent-dark">
                 <div className="flex flex-wrap gap-1.5">
                   <button
                     onClick={() => {
                       onTagSelect(null);
                       setTagsExpanded(false);
                     }}
-                    className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                    className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                       selectedTag === null
-                        ? "bg-brand text-white border-brand"
-                        : "bg-gray-900 text-gray-500 border-gray-800 hover:border-gray-700 hover:text-gray-300"
+                        ? "bg-brand text-white border-accent-light"
+                        : "bg-accent/5 text-gray-300 border-accent-dark hover:border-accent-light hover:text-white"
                     }`}
                   >
                     All Posts
@@ -122,10 +122,10 @@ export function FilterBar({
                         onTagSelect(tag);
                         setTagsExpanded(false);
                       }}
-                      className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
+                      className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
                         selectedTag === tag
-                          ? "bg-brand text-white border-brand"
-                          : "bg-gray-900 text-gray-500 border-gray-800 hover:border-gray-700 hover:text-gray-300"
+                          ? "bg-brand text-white border-accent-light"
+                          : "bg-accent/5 text-gray-300 border-accent-dark hover:border-accent-light hover:text-white"
                       }`}
                     >
                       {tag}
@@ -139,7 +139,7 @@ export function FilterBar({
           {hasActiveFilters && (
             <button
               onClick={onClearFilters}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border bg-brand/10 text-brand-light border-brand/30 hover:bg-brand hover:text-white transition-colors whitespace-nowrap self-start text-sm"
+              className="flex items-center gap-1.5 px-4 py-2.5 rounded-lg border bg-brand/10 text-brand-light border-accent-dark hover:bg-brand hover:text-white hover:shadow-[0_0_18px_#26619ca0] transition-all whitespace-nowrap self-start text-sm"
             >
               <X className="w-3.5 h-3.5" />
               Clear
