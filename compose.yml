@@ -20,6 +20,7 @@ services:
       - DIRECTUS_URL=${DIRECTUS_URL}
       - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
       - CORS_ORIGIN=${CORS_ORIGIN:-*}
+      - DIRECTUS_COLLECTION=${DIRECTUS_COLLECTION:-RecoverySky_Blog}
     healthcheck:
       test:
         [

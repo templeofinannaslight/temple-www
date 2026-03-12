@@ -15,6 +15,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://content.rso';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN;
+const DIRECTUS_COLLECTION = process.env.DIRECTUS_COLLECTION || 'Mikkis_Mess';
 
 if (!DIRECTUS_TOKEN) {
   console.warn('⚠️  No DIRECTUS_TOKEN found - will try public access');
@@ -26,69 +27,104 @@ app.use(cors({
   credentials: true
 }));
 
-// Generic Directus collection proxy
-app.get('/api/:collection', async (req, res) => {
-  const { collection } = req.params;
+// --- Shared proxy helpers ---
 
-  try {
-    // Build Directus API URL
-    const directusApiUrl = new URL(`/items/${collection}`, DIRECTUS_URL);
+function rewriteAssetUrls(dataStr) {
+  const directusHost = new URL(DIRECTUS_URL).host;
+  dataStr = dataStr.replace(new RegExp(`https?://${directusHost}/assets/`, 'g'), '/api/assets/');
+  dataStr = dataStr.replace(new RegExp(`//${directusHost}/assets/`, 'g'), '/api/assets/');
+  dataStr = dataStr.replace(/(?<!\/api)\/assets\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi, '/api/assets/$1');
+  return dataStr;
+}
 
-    // Forward all query parameters (filter, sort, limit, fields, etc.)
-    Object.keys(req.query).forEach(key => {
-      directusApiUrl.searchParams.append(key, req.query[key]);
+async function proxyCollection(collection, query, res) {
+  const directusApiUrl = new URL(`/items/${collection}`, DIRECTUS_URL);
+  Object.keys(query).forEach(key => {
+    directusApiUrl.searchParams.append(key, query[key]);
+  });
+
+  console.log(`📡 Proxying: /items/${collection}${directusApiUrl.search}`);
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (DIRECTUS_TOKEN) {
+    headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
+  }
+
+  const response = await fetch(directusApiUrl.toString(), { headers });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`❌ Directus error (${response.status}):`, errorText);
+    return res.status(response.status).json({
+      error: 'Directus API error',
+      status: response.status,
+      message: errorText
     });
+  }
 
-    console.log(`📡 Proxying: GET /api/${collection} → ${directusApiUrl.pathname}${directusApiUrl.search}`);
+  let data = await response.json();
+  data = JSON.parse(rewriteAssetUrls(JSON.stringify(data)));
+  res.json(data);
+}
 
-    // Fetch from Directus with authentication (if token provided)
-    const headers = {
-      'Content-Type': 'application/json'
-    };
+async function proxyCollectionItem(collection, id, query, res) {
+  const directusApiUrl = new URL(`/items/${collection}/${id}`, DIRECTUS_URL);
+  Object.keys(query).forEach(key => {
+    directusApiUrl.searchParams.append(key, query[key]);
+  });
 
-    if (DIRECTUS_TOKEN) {
-      headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
-    }
+  console.log(`📡 Proxying: /items/${collection}/${id}`);
 
-    const response = await fetch(directusApiUrl.toString(), { headers });
+  const headers = { 'Content-Type': 'application/json' };
+  if (DIRECTUS_TOKEN) {
+    headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
+  }
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`❌ Directus error (${response.status}):`, errorText);
-      return res.status(response.status).json({
-        error: 'Directus API error',
-        status: response.status,
-        message: errorText
-      });
-    }
+  const response = await fetch(directusApiUrl.toString(), { headers });
 
-    let data = await response.json();
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error(`❌ Directus error (${response.status}):`, errorText);
+    return res.status(response.status).json({
+      error: 'Directus API error',
+      status: response.status,
+      message: errorText
+    });
+  }
 
-    // Rewrite Directus asset URLs to use our proxy
-    let dataStr = JSON.stringify(data);
+  let data = await response.json();
+  data = JSON.parse(rewriteAssetUrls(JSON.stringify(data)));
+  res.json(data);
+}
 
-    // Handle various URL formats Directus might use
-    const directusHost = new URL(DIRECTUS_URL).host;
+// --- Blog routes (map to DIRECTUS_COLLECTION at runtime) ---
 
-    // Full URL with protocol: https://content.rso/assets/
-    dataStr = dataStr.replace(new RegExp(`https?://${directusHost}/assets/`, 'g'), '/api/assets/');
-    // Protocol-relative: //content.rso/assets/
-    dataStr = dataStr.replace(new RegExp(`//${directusHost}/assets/`, 'g'), '/api/assets/');
-    // Relative path with UUID: /assets/uuid (but not already /api/assets/)
-    // Directus UUIDs look like: e4529132-8af2-4dc0-a8b4-706620e24358
-    dataStr = dataStr.replace(/(?<!\/api)\/assets\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi, '/api/assets/$1');
-
-    console.log('📝 Rewritten URLs for:', collection);
-
-    data = JSON.parse(dataStr);
-    res.json(data);
-
+app.get('/api/blog', async (req, res) => {
+  try {
+    await proxyCollection(DIRECTUS_COLLECTION, req.query, res);
   } catch (error) {
     console.error('❌ Proxy error:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      message: error.message
-    });
+    res.status(500).json({ error: 'Internal server error', message: error.message });
+  }
+});
+
+app.get('/api/blog/:id', async (req, res) => {
+  try {
+    await proxyCollectionItem(DIRECTUS_COLLECTION, req.params.id, req.query, res);
+  } catch (error) {
+    console.error('❌ Proxy error:', error);
+    res.status(500).json({ error: 'Internal server error', message: error.message });
+  }
+});
+
+// --- Generic Directus collection proxy ---
+
+app.get('/api/:collection', async (req, res) => {
+  try {
+    await proxyCollection(req.params.collection, req.query, res);
+  } catch (error) {
+    console.error('❌ Proxy error:', error);
+    res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 });
 
@@ -138,7 +174,6 @@ app.get('/api/assets/:id', async (req, res) => {
 // Fallback: /assets/:uuid redirects to /api/assets/:uuid (only UUIDs, not Vite assets)
 const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;
 app.get('/assets/:id', (req, res, next) => {
-  // Skip non-UUID assets (let static middleware handle Vite assets)
   if (!UUID_REGEX.test(req.params.id)) {
     return next();
   }
@@ -148,55 +183,14 @@ app.get('/assets/:id', (req, res, next) => {
   res.redirect(redirect);
 });
 
-// Single item from Directus collection
-// Placed after /api/assets/:id so asset requests don't match this route
+// Single item from generic Directus collection
+// Placed after /api/assets/:id so asset requests don't match
 app.get('/api/:collection/:id', async (req, res) => {
-  const { collection, id } = req.params;
-
   try {
-    const directusApiUrl = new URL(`/items/${collection}/${id}`, DIRECTUS_URL);
-
-    Object.keys(req.query).forEach(key => {
-      directusApiUrl.searchParams.append(key, req.query[key]);
-    });
-
-    console.log(`📡 Proxying: GET /api/${collection}/${id} → ${directusApiUrl.pathname}`);
-
-    const headers = { 'Content-Type': 'application/json' };
-    if (DIRECTUS_TOKEN) {
-      headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
-    }
-
-    const response = await fetch(directusApiUrl.toString(), { headers });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error(`❌ Directus error (${response.status}):`, errorText);
-      return res.status(response.status).json({
-        error: 'Directus API error',
-        status: response.status,
-        message: errorText
-      });
-    }
-
-    let data = await response.json();
-
-    // Rewrite Directus asset URLs
-    let dataStr = JSON.stringify(data);
-    const directusHost = new URL(DIRECTUS_URL).host;
-    dataStr = dataStr.replace(new RegExp(`https?://${directusHost}/assets/`, 'g'), '/api/assets/');
-    dataStr = dataStr.replace(new RegExp(`//${directusHost}/assets/`, 'g'), '/api/assets/');
-    dataStr = dataStr.replace(/(?<!\/api)\/assets\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/gi, '/api/assets/$1');
-
-    data = JSON.parse(dataStr);
-    res.json(data);
-
+    await proxyCollectionItem(req.params.collection, req.params.id, req.query, res);
   } catch (error) {
     console.error('❌ Proxy error:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      message: error.message
-    });
+    res.status(500).json({ error: 'Internal server error', message: error.message });
   }
 });
 
@@ -219,5 +213,6 @@ if (NODE_ENV === 'production') {
 app.listen(PORT, () => {
   console.log(`🚀 API server running on http://localhost:${PORT}`);
   console.log(`📍 Proxying to: ${DIRECTUS_URL}`);
+  console.log(`📂 Blog collection: ${DIRECTUS_COLLECTION}`);
   console.log(`🌍 Environment: ${NODE_ENV}`);
 });
