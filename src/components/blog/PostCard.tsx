@@ -19,7 +19,7 @@ export function PostCard({ post, onTagClick }: PostCardProps) {
         {post.featured_image && (
           <div className="overflow-hidden rounded-t-lg">
             <img
-              src={`${post.featured_image}?width=800&height=400&fit=cover`}
+              src={`/api/assets/${post.featured_image}?width=800&height=400&fit=cover`}
               alt={post.title}
               className="w-full h-48 object-cover group-hover:scale-[1.02] transition-transform duration-300"
             />

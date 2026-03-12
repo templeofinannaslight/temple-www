@@ -92,7 +92,7 @@ export function PostPage() {
 
         {post.featured_image && (
           <img
-            src={`${post.featured_image}?width=1200&height=600&fit=cover`}
+            src={`/api/assets/${post.featured_image}?width=1200&height=600&fit=cover`}
             alt={post.title}
             className="w-full h-64 sm:h-80 object-cover rounded-lg mb-8"
           />
