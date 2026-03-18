@@ -194,6 +194,54 @@ app.get('/api/:collection/:id', async (req, res) => {
   }
 });
 
+// Dynamic sitemap
+app.get('/sitemap.xml', async (req, res) => {
+  const baseUrl = process.env.SITE_URL || 'https://recoverysky.org';
+
+  // Static pages
+  const pages = ['/', '/app', '/blog'];
+
+  // Fetch published blog posts for dynamic URLs
+  let postUrls = [];
+  try {
+    const directusApiUrl = new URL(`/items/${DIRECTUS_COLLECTION}`, DIRECTUS_URL);
+    directusApiUrl.searchParams.append('filter[status][_eq]', 'published');
+    directusApiUrl.searchParams.append('fields', 'id,title,date_updated');
+    directusApiUrl.searchParams.append('sort', '-date_updated');
+    directusApiUrl.searchParams.append('limit', '-1');
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (DIRECTUS_TOKEN) headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
+
+    const response = await fetch(directusApiUrl.toString(), { headers });
+    if (response.ok) {
+      const json = await response.json();
+      postUrls = (json.data || []).map(post => {
+        const slug = post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        return {
+          url: `/post/${post.id}/${slug}`,
+          lastmod: post.date_updated ? new Date(post.date_updated).toISOString().split('T')[0] : undefined,
+        };
+      });
+    }
+  } catch (err) {
+    console.error('⚠️  Sitemap: failed to fetch posts:', err.message);
+  }
+
+  const urls = [
+    ...pages.map(p => `  <url>\n    <loc>${baseUrl}${p}</loc>\n    <changefreq>${p === '/' ? 'weekly' : 'monthly'}</changefreq>\n  </url>`),
+    ...postUrls.map(p => `  <url>\n    <loc>${baseUrl}${p.url}</loc>${p.lastmod ? `\n    <lastmod>${p.lastmod}</lastmod>` : ''}\n    <changefreq>monthly</changefreq>\n  </url>`),
+  ];
+
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.join('\n')}
+</urlset>`;
+
+  res.setHeader('Content-Type', 'application/xml');
+  res.send(xml);
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'recoverysky-blog-api' });
