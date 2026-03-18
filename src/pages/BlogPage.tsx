@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { usePosts } from "@/hooks/usePosts";
 import { useTags } from "@/hooks/useTags";
 import { FilterBar } from "@/components/blog/FilterBar";
@@ -29,6 +30,13 @@ export function BlogPage() {
 
   return (
     <div className="container mx-auto px-4 py-12">
+      <Helmet>
+        <title>Blog — RecoverySky</title>
+        <meta name="description" content="Insights, updates, and stories from the RecoverySky team." />
+        <meta property="og:title" content="Blog — RecoverySky" />
+        <meta property="og:description" content="Insights, updates, and stories from the RecoverySky team." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <div className="max-w-3xl mx-auto">
         <div className="mb-10">
           <h1 className="text-4xl font-bold tracking-tight mb-2">

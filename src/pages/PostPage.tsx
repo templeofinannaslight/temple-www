@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import { fetchPost } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import type { Post } from "@/lib/types";
@@ -23,7 +24,6 @@ export function PostPage() {
         const data = await fetchPost(id!);
         if (!cancelled) {
           setPost(data);
-          document.title = `${data.title} — RecoverySky Blog`;
         }
       } catch (e: any) {
         if (!cancelled) setError(e.message);
@@ -35,7 +35,6 @@ export function PostPage() {
     load();
     return () => {
       cancelled = true;
-      document.title = "RecoverySky Blog";
     };
   }, [id]);
 
@@ -79,8 +78,20 @@ export function PostPage() {
 
   const displayDate = post.written_date || post.date_created;
 
+  const metaDescription = post.excerpt || `${post.title} — RecoverySky Blog`;
+
   return (
     <div className="container mx-auto px-4 py-12">
+      <Helmet>
+        <title>{post.title} — RecoverySky Blog</title>
+        <meta name="description" content={metaDescription} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:type" content="article" />
+        {post.featured_image && (
+          <meta property="og:image" content={`/api/assets/${post.featured_image}?width=1200&height=630&fit=cover`} />
+        )}
+      </Helmet>
       <article className="max-w-3xl mx-auto">
         <Link
           to="/blog"

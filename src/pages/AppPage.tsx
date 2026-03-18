@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { Video, ClipboardCheck, Bell, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
 
@@ -52,6 +53,14 @@ const PLATFORMS = [
 export function AppPage() {
   return (
     <div>
+      <Helmet>
+        <title>The Recovery App — RecoverySky</title>
+        <meta name="description" content="Find live recovery meetings, track attendance, and get reminders — all from one free app. Available on iOS, Android, and web." />
+        <meta property="og:title" content="The Recovery App — RecoverySky" />
+        <meta property="og:description" content="Free recovery app for live meetings, attendance tracking, and meeting reminders." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       {/* Hero */}
       <section className="relative py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">

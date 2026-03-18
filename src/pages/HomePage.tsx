@@ -10,6 +10,7 @@ import {
   Scale,
   Users,
 } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 import { fetchPosts } from "@/lib/api";
 import { formatDate, slugify } from "@/lib/format";
 import type { Post } from "@/lib/types";
@@ -75,6 +76,14 @@ export function HomePage() {
 
   return (
     <div>
+      <Helmet>
+        <title>RecoverySky — Find Your Pink Cloud</title>
+        <meta name="description" content="RecoverySky empowers individuals in recovery by providing free, accessible technology to connect them with meetings, community, and support." />
+        <meta property="og:title" content="RecoverySky — Find Your Pink Cloud" />
+        <meta property="og:description" content="Free recovery technology connecting people with meetings, community, and support." />
+        <meta property="og:type" content="website" />
+      </Helmet>
+
       {/* Hero */}
       <section className="relative py-24 sm:py-32">
         <div className="container mx-auto px-4 text-center">
