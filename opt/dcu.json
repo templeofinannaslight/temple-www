@@ -1,5 +1,9 @@
 {
-  "name": "Blog",
-  "description": "Starting Docker Compose services for Blog",
-  "vault": ["docker-config:Blog", "app-config:Blog", "app-secrets:Blog/JSON"]
+  "name": "Corp-www",
+  "description": "Starting Docker Compose services for Corp-www",
+  "vault": [
+    "docker-config:Corp-www",
+    "app-config:Corp-www",
+    "app-secrets:Corp-www/JSON"
+  ]
 }

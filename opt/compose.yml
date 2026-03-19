@@ -1,14 +1,14 @@
 services:
-  blog:
+  corp-www:
     image: ${DOCKER_IMAGE}
-    container_name: blog
+    container_name: corp-www
     restart: unless-stopped
     expose:
       - "3001"
     networks:
       - recoverysky
     volumes:
-      - /opt/containers/blog:/container:ro
+      - /opt/containers/corp-www:/container:ro
       - /etc/pki/tls/certs/ca-bundle.crt:/container/ca-bundle.crt:ro
     environment:
       - NODE_EXTRA_CA_CERTS=/container/ca-bundle.crt
