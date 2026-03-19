@@ -5,12 +5,11 @@
   "type": "module",
   "scripts": {
     "actions": "rm -rf ./.forgejo/actions && git clone --depth 1 https://git.rso/recoverysky-org/forgejo-actions.git ./.forgejo/actions && rm -rf ./.forgejo/actions/.git",
-    "dev": "concurrently \"npm:dev:server\" \"npm:dev:client\"",
-    "dev:server": "node server/index.js",
-    "dev:client": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
-    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "build": "tsc && pnpm build:client && pnpm build:server",
+    "build:client": "vite build --outDir dist/client --ssrManifest",
+    "build:server": "NODE_ENV=production vite build --ssr src/entry-server.tsx --outDir dist/server --mode production",
+    "start": "NODE_ENV=production node server/index.js",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -27,6 +26,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^3.0.0",
+    "react-router": "^7.13.1",
     "react-router-dom": "^7.13.1",
     "tailwind-merge": "^3.3.1"
   },

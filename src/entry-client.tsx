@@ -1,12 +1,13 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { hydrateRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import App from "./App";
 
-createRoot(document.getElementById("root")!).render(
+hydrateRoot(
+  document.getElementById("root")!,
   <StrictMode>
     <HelmetProvider>
       <Auth0Provider

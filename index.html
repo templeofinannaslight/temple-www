@@ -11,9 +11,10 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="RecoverySky" />
     <title>RecoverySky — Find Your Pink Cloud</title>
+    <!--ssr-head-->
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="root"><!--ssr-outlet--></div>
+    <script type="module" src="/src/entry-client.tsx"></script>
   </body>
 </html>

@@ -1,11 +1,54 @@
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LogIn, LogOut, Github } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
 
+function AuthNav() {
+  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+  if (isAuthenticated) {
+    return (
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-gray-300">{user?.name || user?.email}</span>
+        <button
+          onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
+          className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 hover:border-accent-light hover:text-white transition-all"
+        >
+          <LogOut className="w-3.5 h-3.5" />
+          Logout
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => loginWithRedirect()}
+      className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-brand text-white rounded-lg border-2 border-neon shadow-[0_0_15px_#ff2d9550] hover:shadow-[0_0_25px_#ff2d9580] transition-all"
+    >
+      <LogIn className="w-3.5 h-3.5" />
+      Portal
+    </button>
+  );
+}
+
+function PortalFallback() {
+  return (
+    <span className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-brand text-white rounded-lg border-2 border-neon shadow-[0_0_15px_#ff2d9550]">
+      <LogIn className="w-3.5 h-3.5" />
+      Portal
+    </span>
+  );
+}
+
 export function Header() {
   const { pathname } = useLocation();
-  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navLink = (to: string, label: string) => (
     <Link
@@ -51,26 +94,7 @@ export function Header() {
             >
               <Github className="w-5 h-5" />
             </a>
-            {isAuthenticated ? (
-              <div className="flex items-center gap-3">
-                <span className="text-sm text-gray-300">{user?.name || user?.email}</span>
-                <button
-                  onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-                  className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 hover:border-accent-light hover:text-white transition-all"
-                >
-                  <LogOut className="w-3.5 h-3.5" />
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => loginWithRedirect()}
-                className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-brand text-white rounded-lg border-2 border-neon shadow-[0_0_15px_#ff2d9550] hover:shadow-[0_0_25px_#ff2d9580] transition-all"
-              >
-                <LogIn className="w-3.5 h-3.5" />
-                Portal
-              </button>
-            )}
+            {mounted ? <AuthNav /> : <PortalFallback />}
           </nav>
         </div>
       </div>

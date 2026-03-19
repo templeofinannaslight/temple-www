@@ -10,6 +10,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  ssr: {
+    resolve: {
+      conditions: ['module-sync', 'import', 'module', 'default'],
+      externalConditions: ['module-sync', 'import', 'module', 'default'],
+    },
+  },
   server: {
     proxy: {
       '/api': {
