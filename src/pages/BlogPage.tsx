@@ -1,11 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { usePosts } from "@/hooks/usePosts";
 import { useTags } from "@/hooks/useTags";
+import { useSSRData } from "@/lib/SSRDataContext";
 import { FilterBar } from "@/components/blog/FilterBar";
 import { PostList } from "@/components/blog/PostList";
 import { Pagination } from "@/components/blog/Pagination";
 
 export function BlogPage() {
+  const ssrData = useSSRData();
   const {
     posts,
     error,
@@ -24,9 +26,9 @@ export function BlogPage() {
     handleTagSelect,
     handlePageSizeChange,
     clearFilters,
-  } = usePosts();
+  } = usePosts(ssrData.posts);
 
-  const allTags = useTags();
+  const allTags = useTags(ssrData.tags);
 
   return (
     <div className="container mx-auto px-4 py-12">

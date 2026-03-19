@@ -30,7 +30,14 @@ async function createServer() {
     credentials: true
   }));
 
-  // --- Shared proxy helpers ---
+  // --- Shared helpers ---
+
+  function safeJsonStringify(data) {
+    return JSON.stringify(data)
+      .replace(/</g, '\\u003c')
+      .replace(/>/g, '\\u003e')
+      .replace(/&/g, '\\u0026');
+  }
 
   function rewriteAssetUrls(dataStr) {
     const directusHost = new URL(DIRECTUS_URL).host;
@@ -98,6 +105,85 @@ async function createServer() {
     let data = await response.json();
     data = JSON.parse(rewriteAssetUrls(JSON.stringify(data)));
     res.json(data);
+  }
+
+  // --- SSR data fetching ---
+
+  async function fetchDirectus(urlPath, params = {}) {
+    const directusApiUrl = new URL(urlPath, DIRECTUS_URL);
+    Object.entries(params).forEach(([key, value]) => {
+      directusApiUrl.searchParams.append(key, value);
+    });
+
+    const headers = { 'Content-Type': 'application/json' };
+    if (DIRECTUS_TOKEN) {
+      headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
+    }
+
+    const response = await fetch(directusApiUrl.toString(), { headers });
+    if (!response.ok) return null;
+
+    let data = await response.json();
+    data = JSON.parse(rewriteAssetUrls(JSON.stringify(data)));
+    return data;
+  }
+
+  async function getSSRData(url) {
+    const ssrData = {};
+    const pathname = url.split('?')[0];
+
+    // Blog listing page
+    if (pathname === '/blog') {
+      try {
+        const [postsResult, tagsResult] = await Promise.all([
+          fetchDirectus(`/items/${DIRECTUS_COLLECTION}`, {
+            'filter[status][_eq]': 'published',
+            'sort': '-written_date',
+            'limit': '10',
+            'offset': '0',
+            'meta': 'filter_count',
+          }),
+          fetchDirectus(`/items/${DIRECTUS_COLLECTION}`, {
+            'filter[status][_eq]': 'published',
+            'filter[tags][_nnull]': 'true',
+            'fields': 'tags',
+            'limit': '-1',
+          }),
+        ]);
+
+        if (postsResult) {
+          ssrData.posts = {
+            posts: postsResult.data || [],
+            totalCount: postsResult.meta?.filter_count || 0,
+          };
+        }
+
+        if (tagsResult) {
+          const tagSet = new Set();
+          (tagsResult.data || []).forEach(post => {
+            if (post.tags) post.tags.forEach(tag => tagSet.add(tag));
+          });
+          ssrData.tags = Array.from(tagSet).sort();
+        }
+      } catch (err) {
+        console.error('⚠️  SSR data fetch failed for /blog:', err.message);
+      }
+    }
+
+    // Individual post page
+    const postMatch = pathname.match(/^\/post\/(\d+)/);
+    if (postMatch) {
+      try {
+        const result = await fetchDirectus(`/items/${DIRECTUS_COLLECTION}/${postMatch[1]}`);
+        if (result) {
+          ssrData.post = result.data;
+        }
+      } catch (err) {
+        console.error('⚠️  SSR data fetch failed for post:', err.message);
+      }
+    }
+
+    return ssrData;
   }
 
   // --- Blog routes (map to DIRECTUS_COLLECTION at runtime) ---
@@ -255,11 +341,13 @@ ${urls.join('\n')}
     const template = fs.readFileSync(path.join(clientPath, 'index.html'), 'utf-8');
 
     // SSR fallback for all routes
-    app.get('*path', (req, res) => {
-      const { html, head } = render(req.originalUrl);
+    app.get('*path', async (req, res) => {
+      const ssrData = await getSSRData(req.originalUrl);
+      const { html, head } = render(req.originalUrl, ssrData);
       const page = template
         .replace('<!--ssr-head-->', head)
-        .replace('<!--ssr-outlet-->', html);
+        .replace('<!--ssr-outlet-->', html)
+        .replace('</head>', `<script>window.__SSR_DATA__=${safeJsonStringify(ssrData)}</script>\n</head>`);
       res.status(200).set({ 'Content-Type': 'text/html' }).send(page);
     });
   } else {
@@ -276,10 +364,12 @@ ${urls.join('\n')}
         let template = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(req.originalUrl, template);
         const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
-        const { html, head } = render(req.originalUrl);
+        const ssrData = await getSSRData(req.originalUrl);
+        const { html, head } = render(req.originalUrl, ssrData);
         const page = template
           .replace('<!--ssr-head-->', head)
-          .replace('<!--ssr-outlet-->', html);
+          .replace('<!--ssr-outlet-->', html)
+          .replace('</head>', `<script>window.__SSR_DATA__=${safeJsonStringify(ssrData)}</script>\n</head>`);
         res.status(200).set({ 'Content-Type': 'text/html' }).send(page);
       } catch (e) {
         vite.ssrFixStacktrace(e);

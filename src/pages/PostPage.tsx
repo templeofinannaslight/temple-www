@@ -1,18 +1,27 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { fetchPost } from "@/lib/api";
+import { useSSRData } from "@/lib/SSRDataContext";
 import { formatDate } from "@/lib/format";
 import type { Post } from "@/lib/types";
 
 export function PostPage() {
   const { id } = useParams<{ id: string }>();
-  const [post, setPost] = useState<Post | null>(null);
+  const ssrData = useSSRData();
+  const ssrPost = ssrData.post?.id === Number(id) ? ssrData.post : null;
+  const [post, setPost] = useState<Post | null>(ssrPost);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!ssrPost);
+  const skipInitialFetch = useRef(!!ssrPost);
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false;
+      return;
+    }
+
     if (!id) return;
 
     let cancelled = false;

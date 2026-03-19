@@ -1,22 +1,34 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { fetchPosts } from "@/lib/api";
 import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 import type { Post } from "@/lib/types";
 
-export function usePosts() {
-  const [posts, setPosts] = useState<Post[]>([]);
+interface InitialData {
+  posts: Post[];
+  totalCount: number;
+}
+
+export function usePosts(initialData?: InitialData) {
+  const [posts, setPosts] = useState<Post[]>(initialData?.posts ?? []);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialData);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(initialData?.totalCount ?? 0);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState(DEFAULT_PAGE_SIZE);
 
+  const skipInitialFetch = useRef(!!initialData);
+
   const totalPages = pageSize === -1 ? 1 : Math.ceil(totalCount / pageSize);
 
   useEffect(() => {
+    if (skipInitialFetch.current) {
+      skipInitialFetch.current = false;
+      return;
+    }
+
     let cancelled = false;
 
     async function load() {
