@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { HomePage } from "@/pages/HomePage";
 import { BlogPage } from "@/pages/BlogPage";
@@ -9,6 +10,9 @@ import { NotFoundPage } from "@/pages/NotFoundPage";
 function App() {
   return (
     <RootLayout>
+      <Helmet>
+        <meta property="og:site_name" content="RecoverySky" />
+      </Helmet>
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/app" element={<AppPage />} />
