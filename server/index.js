@@ -281,7 +281,7 @@ async function createServer() {
   // Dynamic sitemap
   app.get('/sitemap.xml', async (req, res) => {
     const baseUrl = process.env.SITE_URL || 'https://recoverysky.org';
-    const pages = ['/', '/app', '/blog'];
+    const pages = ['/', '/app', '/blog', '/support'];
     let postUrls = [];
 
     try {

@@ -78,7 +78,7 @@ export function Header() {
             {navLink("/", "Home")}
             {navLink("/app", "App")}
             {navLink("/blog", "Blog")}
-            <a href="https://support.recoverysky.org" className="text-sm text-gray-300 hover:text-white transition-colors">Support</a>
+            {navLink("/support", "Support")}
             <Link
               to="/#contact"
               className="text-sm text-gray-300 hover:text-white transition-colors"
