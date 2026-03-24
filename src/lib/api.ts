@@ -1,5 +1,5 @@
-import { API_URL, COLLECTION } from "./constants";
-import type { Post } from "./types";
+import { API_URL, COLLECTION, WWW_COLLECTION } from "./constants";
+import type { Post, WWWDocument } from "./types";
 
 interface FetchPostsParams {
   sortOrder: "asc" | "desc";
@@ -74,6 +74,21 @@ export async function fetchPost(id: string): Promise<Post> {
   }
   const json = await response.json();
   return json.data;
+}
+
+export async function fetchWWWDocument(name: string): Promise<WWWDocument> {
+  const response = await fetch(
+    `${API_URL}/${WWW_COLLECTION}?filter[name][_eq]=${encodeURIComponent(name)}&limit=1`
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+  }
+  const json = await response.json();
+  const docs = json.data || [];
+  if (docs.length === 0) {
+    throw new Error("Document not found");
+  }
+  return docs[0];
 }
 
 export async function fetchAllTags(): Promise<string[]> {

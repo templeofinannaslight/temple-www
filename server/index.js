@@ -183,6 +183,28 @@ async function createServer() {
       }
     }
 
+    // Document pages (EULA, terms, privacy, disclaimer)
+    const docMap = {
+      '/eula': 'EULA',
+      '/terms': 'terms',
+      '/privacy': 'privacy',
+      '/disclaimer': 'disclaimer',
+    };
+    const docName = docMap[pathname];
+    if (docName) {
+      try {
+        const result = await fetchDirectus(`/items/RecoverySky_WWW`, {
+          'filter[name][_eq]': docName,
+          'limit': '1',
+        });
+        if (result && result.data && result.data.length > 0) {
+          ssrData.document = result.data[0];
+        }
+      } catch (err) {
+        console.error(`⚠️  SSR data fetch failed for ${pathname}:`, err.message);
+      }
+    }
+
     return ssrData;
   }
 
@@ -281,7 +303,7 @@ async function createServer() {
   // Dynamic sitemap
   app.get('/sitemap.xml', async (req, res) => {
     const baseUrl = process.env.SITE_URL || 'https://recoverysky.org';
-    const pages = ['/', '/app', '/blog', '/support'];
+    const pages = ['/', '/app', '/blog', '/support', '/eula', '/terms', '/privacy', '/disclaimer'];
     let postUrls = [];
 
     try {

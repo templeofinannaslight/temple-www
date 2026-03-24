@@ -12,3 +12,11 @@ export interface Post {
   date_created: string;
   date_updated: string;
 }
+
+export interface WWWDocument {
+  id: number;
+  name: string;
+  content: string;
+  date_created: string;
+  date_updated: string;
+}
