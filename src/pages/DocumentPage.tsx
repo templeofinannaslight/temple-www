@@ -1,24 +1,42 @@
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { fetchWWWDocument } from "@/lib/api";
+import { fetchDocument } from "@/lib/api";
+import { ALLOWED_CONTENT_COLLECTIONS } from "@/lib/constants";
 import { useSSRData } from "@/lib/SSRDataContext";
-import type { WWWDocument } from "@/lib/types";
+import type { ContentDocument } from "@/lib/types";
 
-interface DocumentPageProps {
-  name: string;
-  title: string;
+function formatTitle(name: string): string {
+  return name
+    .replace(/_/g, " ")
+    .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-export function DocumentPage({ name, title }: DocumentPageProps) {
+export function DocumentPage() {
+  const { collection, name } = useParams<{
+    collection: string;
+    name: string;
+  }>();
+
+  const allowed = !!collection && ALLOWED_CONTENT_COLLECTIONS.has(collection);
+
   const ssrData = useSSRData();
   const ssrDoc =
-    ssrData.document?.name === name ? ssrData.document : null;
-  const [doc, setDoc] = useState<WWWDocument | null>(ssrDoc);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(!ssrDoc);
+    ssrData.document?.collection === collection &&
+    ssrData.document?.title === name
+      ? ssrData.document?.data ?? null
+      : null;
+
+  const [doc, setDoc] = useState<ContentDocument | null>(ssrDoc);
+  const [error, setError] = useState<string | null>(
+    !allowed ? "Not found" : null
+  );
+  const [loading, setLoading] = useState(allowed && !ssrDoc);
   const skipInitialFetch = useRef(!!ssrDoc);
 
   useEffect(() => {
+    if (!allowed || !collection || !name) return;
+
     if (skipInitialFetch.current) {
       skipInitialFetch.current = false;
       return;
@@ -30,7 +48,7 @@ export function DocumentPage({ name, title }: DocumentPageProps) {
       setLoading(true);
       setError(null);
       try {
-        const data = await fetchWWWDocument(name);
+        const data = await fetchDocument(collection!, name!);
         if (!cancelled) setDoc(data);
       } catch (e: any) {
         if (!cancelled) setError(e.message);
@@ -43,7 +61,9 @@ export function DocumentPage({ name, title }: DocumentPageProps) {
     return () => {
       cancelled = true;
     };
-  }, [name]);
+  }, [collection, name, allowed]);
+
+  const title = name ? formatTitle(name) : "Document";
 
   if (loading) {
     return (

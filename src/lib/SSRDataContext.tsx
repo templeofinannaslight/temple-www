@@ -1,11 +1,11 @@
 import { createContext, useContext } from "react";
-import type { Post, WWWDocument } from "./types";
+import type { Post, ContentDocument } from "./types";
 
 export interface SSRData {
   posts?: { posts: Post[]; totalCount: number };
   post?: Post;
   tags?: string[];
-  document?: WWWDocument;
+  document?: { collection: string; title: string; data: ContentDocument };
 }
 
 const SSRDataContext = createContext<SSRData>({});

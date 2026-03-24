@@ -13,9 +13,9 @@ export interface Post {
   date_updated: string;
 }
 
-export interface WWWDocument {
+export interface ContentDocument {
   id: number;
-  name: string;
+  title: string;
   content: string;
   date_created: string;
   date_updated: string;

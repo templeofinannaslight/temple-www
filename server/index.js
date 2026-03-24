@@ -183,25 +183,23 @@ async function createServer() {
       }
     }
 
-    // Document pages (EULA, terms, privacy, disclaimer)
-    const docMap = {
-      '/eula': 'EULA',
-      '/terms': 'terms',
-      '/privacy': 'privacy',
-      '/disclaimer': 'disclaimer',
-    };
-    const docName = docMap[pathname];
-    if (docName) {
-      try {
-        const result = await fetchDirectus(`/items/RecoverySky_WWW`, {
-          'filter[name][_eq]': docName,
-          'limit': '1',
-        });
-        if (result && result.data && result.data.length > 0) {
-          ssrData.document = result.data[0];
+    // Dynamic content pages: /content/:collection/:name
+    const ALLOWED_CONTENT_COLLECTIONS = new Set(['RecoverySky_Content']);
+    const contentMatch = pathname.match(/^\/content\/([^/]+)\/([^/]+)$/);
+    if (contentMatch) {
+      const [, collection, name] = contentMatch;
+      if (ALLOWED_CONTENT_COLLECTIONS.has(collection)) {
+        try {
+          const result = await fetchDirectus(`/items/${collection}`, {
+            'filter[title][_eq]': decodeURIComponent(name),
+            'limit': '1',
+          });
+          if (result && result.data && result.data.length > 0) {
+            ssrData.document = { collection, title: decodeURIComponent(name), data: result.data[0] };
+          }
+        } catch (err) {
+          console.error(`⚠️  SSR data fetch failed for ${pathname}:`, err.message);
         }
-      } catch (err) {
-        console.error(`⚠️  SSR data fetch failed for ${pathname}:`, err.message);
       }
     }
 
@@ -303,7 +301,14 @@ async function createServer() {
   // Dynamic sitemap
   app.get('/sitemap.xml', async (req, res) => {
     const baseUrl = process.env.SITE_URL || 'https://recoverysky.org';
-    const pages = ['/', '/app', '/blog', '/support', '/eula', '/terms', '/privacy', '/disclaimer'];
+    const pages = [
+      '/', '/app', '/blog', '/support',
+      '/content/RecoverySky_Content/EULA',
+      '/content/RecoverySky_Content/terms',
+      '/content/RecoverySky_Content/privacy',
+      '/content/RecoverySky_Content/disclaimer',
+      '/content/RecoverySky_Content/ai_consent',
+    ];
     let postUrls = [];
 
     try {

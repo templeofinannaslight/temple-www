@@ -1,5 +1,5 @@
-import { API_URL, COLLECTION, WWW_COLLECTION } from "./constants";
-import type { Post, WWWDocument } from "./types";
+import { API_URL, COLLECTION, ALLOWED_CONTENT_COLLECTIONS } from "./constants";
+import type { Post, ContentDocument } from "./types";
 
 interface FetchPostsParams {
   sortOrder: "asc" | "desc";
@@ -76,9 +76,12 @@ export async function fetchPost(id: string): Promise<Post> {
   return json.data;
 }
 
-export async function fetchWWWDocument(name: string): Promise<WWWDocument> {
+export async function fetchDocument(collection: string, name: string): Promise<ContentDocument> {
+  if (!ALLOWED_CONTENT_COLLECTIONS.has(collection)) {
+    throw new Error("Collection not allowed");
+  }
   const response = await fetch(
-    `${API_URL}/${WWW_COLLECTION}?filter[name][_eq]=${encodeURIComponent(name)}&limit=1`
+    `${API_URL}/${encodeURIComponent(collection)}?filter[title][_eq]=${encodeURIComponent(name)}&limit=1`
   );
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
