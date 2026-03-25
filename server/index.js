@@ -191,11 +191,11 @@ async function createServer() {
       if (ALLOWED_CONTENT_COLLECTIONS.has(collection)) {
         try {
           const result = await fetchDirectus(`/items/${collection}`, {
-            'filter[title][_eq]': decodeURIComponent(name),
+            'filter[name][_eq]': decodeURIComponent(name),
             'limit': '1',
           });
           if (result && result.data && result.data.length > 0) {
-            ssrData.document = { collection, title: decodeURIComponent(name), data: result.data[0] };
+            ssrData.document = { collection, name: decodeURIComponent(name), data: result.data[0] };
           }
         } catch (err) {
           console.error(`⚠️  SSR data fetch failed for ${pathname}:`, err.message);

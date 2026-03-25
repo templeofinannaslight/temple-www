@@ -6,12 +6,6 @@ import { ALLOWED_CONTENT_COLLECTIONS } from "@/lib/constants";
 import { useSSRData } from "@/lib/SSRDataContext";
 import type { ContentDocument } from "@/lib/types";
 
-function formatTitle(name: string): string {
-  return name
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
 export function DocumentPage() {
   const { collection, name } = useParams<{
     collection: string;
@@ -23,7 +17,7 @@ export function DocumentPage() {
   const ssrData = useSSRData();
   const ssrDoc =
     ssrData.document?.collection === collection &&
-    ssrData.document?.title === name
+    ssrData.document?.name === name
       ? ssrData.document?.data ?? null
       : null;
 
@@ -63,7 +57,7 @@ export function DocumentPage() {
     };
   }, [collection, name, allowed]);
 
-  const title = name ? formatTitle(name) : "Document";
+  const title = doc?.title || name || "Document";
 
   if (loading) {
     return (

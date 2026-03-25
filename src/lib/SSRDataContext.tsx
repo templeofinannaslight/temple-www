@@ -5,7 +5,7 @@ export interface SSRData {
   posts?: { posts: Post[]; totalCount: number };
   post?: Post;
   tags?: string[];
-  document?: { collection: string; title: string; data: ContentDocument };
+  document?: { collection: string; name: string; data: ContentDocument };
 }
 
 const SSRDataContext = createContext<SSRData>({});

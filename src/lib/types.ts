@@ -15,6 +15,7 @@ export interface Post {
 
 export interface ContentDocument {
   id: number;
+  name: string;
   title: string;
   content: string;
   date_created: string;

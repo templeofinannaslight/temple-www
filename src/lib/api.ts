@@ -81,7 +81,7 @@ export async function fetchDocument(collection: string, name: string): Promise<C
     throw new Error("Collection not allowed");
   }
   const response = await fetch(
-    `${API_URL}/${encodeURIComponent(collection)}?filter[title][_eq]=${encodeURIComponent(name)}&limit=1`
+    `${API_URL}/${encodeURIComponent(collection)}?filter[name][_eq]=${encodeURIComponent(name)}&limit=1`
   );
   if (!response.ok) {
     throw new Error(`HTTP ${response.status}: ${response.statusText}`);
