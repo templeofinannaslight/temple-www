@@ -9,9 +9,14 @@ const FAQS = [
       "Yes — 100% free, no hidden fees, no premium tiers, no ads. RecoverySky is a 501(c)(3) nonprofit. Our mission is to remove barriers to recovery, not create new ones.",
   },
   {
-    question: "Do I need to create an account?",
+    question: "Is RecoverySky affiliated with AA, NA, or any fellowship?",
     answer:
-      "No. You can use the app anonymously with full access to live meetings. Creating an optional free account unlocks attendance tracking and cloud sync, but it's never required.",
+      "No. RecoverySky is an independent nonprofit. We support and complement existing recovery fellowships but are not affiliated with, endorsed by, or a replacement for any program.",
+  },
+  {
+    question: "Does RecoverySky host the meetings it provides access to?",
+    answer:
+      "No. RecoverySky is not associated with any meetings and does not provide technical services for any of them.  Meetings are independant, publically hosted Zoom events.",
   },
   {
     question: "Is my information private?",
@@ -27,11 +32,6 @@ const FAQS = [
     question: "How does attendance reporting work?",
     answer:
       "After attending a meeting, you can log it in the app. When you're ready, send a report directly to your sponsor, counselor, or probation officer via email — on your terms, from your device.",
-  },
-  {
-    question: "Is RecoverySky affiliated with AA, NA, or any fellowship?",
-    answer:
-      "No. RecoverySky is an independent nonprofit. We support and complement existing recovery fellowships but are not affiliated with, endorsed by, or a replacement for any program.",
   },
   {
     question: "What platforms is the app available on?",
