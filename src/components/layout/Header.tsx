@@ -94,7 +94,7 @@ export function Header() {
             >
               <Github className="w-5 h-5" />
             </a>
-            {mounted ? <AuthNav /> : <PortalFallback />}
+            {/* {mounted ? <AuthNav /> : <PortalFallback />} */}
           </nav>
         </div>
       </div>
