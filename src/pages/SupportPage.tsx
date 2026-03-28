@@ -41,7 +41,7 @@ const FAQS = [
   {
     question: "I found a bug or have a feature request. How do I report it?",
     answer:
-      "Email us at support@recoverysky.org with a description of the issue or idea. If you're technical, you can also open an issue on our GitHub repository.",
+      "Email us at support@recoverysky.app with a description of the issue or idea. If you're technical, you can also open an issue on our GitHub repository.",
   },
 ];
 
@@ -122,11 +122,11 @@ export function SupportPage() {
               Send us an email and we'll get back to you as soon as possible.
             </p>
             <a
-              href="mailto:support@recoverysky.org"
+              href="mailto:support@recoverysky.app"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               <Mail className="w-5 h-5" />
-              support@recoverysky.org
+              support@recoverysky.app
             </a>
           </div>
         </div>
