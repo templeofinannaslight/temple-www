@@ -31,7 +31,7 @@ const PLATFORMS = [
     icon: Smartphone,
     label: "iOS",
     description: "iPhone & iPad",
-    url: "#", // TODO: App Store link
+    url: "https://apps.apple.com/us/app/recoverysky-aa-meetings/id1577014284",
     buttonText: "App Store",
   },
   {
