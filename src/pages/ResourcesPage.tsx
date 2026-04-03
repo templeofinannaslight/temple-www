@@ -139,7 +139,7 @@ export function ResourcesPage() {
             <h2 className="text-3xl font-bold text-white mb-2 text-center">
               {heading}
             </h2>
-            <p className="text-gray-400 text-center mb-10">{description}</p>
+            <p className="text-white text-center mb-10">{description}</p>
 
             {/* Resource Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -149,7 +149,7 @@ export function ResourcesPage() {
             </div>
 
             {/* Disclaimer */}
-            <p className="text-gray-500 text-sm text-center mt-12 max-w-2xl mx-auto">
+            <p className="text-white text-sm text-center mt-12 max-w-2xl mx-auto">
               RecoverySky is not affiliated with AA, NA, or any fellowship.
               These links are provided as a convenience and point to
               publicly available resources hosted by third parties.
