@@ -4,6 +4,21 @@ import { Mail, ChevronDown, ChevronUp } from "lucide-react";
 
 const FAQS = [
   {
+    question: "I am an old app user and all my attendance records are gone.",
+    answer:
+      "This is caused by one of two things.  Either you logged into the new app using a different email account than you did with the original app, or you failed to perform the onboarding and import attendance.  Please contact support.",
+  },
+  {
+    question:
+      "I can't remember which email account I used with the original app.",
+    answer: "This is very easy to resolve.  Please contact support.",
+  },
+  {
+    question:
+      "Can you export all attendance records from the old app into a PDF?",
+    answer: "Yes, this is a trivial task.  Please contact support",
+  },
+  {
     question: "Is RecoverySky really free?",
     answer:
       "Yes — 100% free, no hidden fees, no premium tiers, no ads. RecoverySky is a 501(c)(3) nonprofit. Our mission is to remove barriers to recovery, not create new ones.",
