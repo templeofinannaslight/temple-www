@@ -79,6 +79,7 @@ export function Header() {
             {navLink("/", "Home")}
             {navLink("/app", "App")}
             {navLink("/blog", "Blog")}
+            {navLink("/resources", "Resources")}
             {navLink("/support", "Support")}
             <Link
               to="/#contact"

@@ -6,6 +6,7 @@ import { BlogPage } from "@/pages/BlogPage";
 import { PostPage } from "@/pages/PostPage";
 import { AppPage } from "@/pages/AppPage";
 import { SupportPage } from "@/pages/SupportPage";
+import { ResourcesPage } from "@/pages/ResourcesPage";
 import { DocumentPage } from "@/pages/DocumentPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
 
@@ -19,6 +20,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/app" element={<AppPage />} />
         <Route path="/blog" element={<BlogPage />} />
+        <Route path="/resources" element={<ResourcesPage />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/content/:collection/:name" element={<DocumentPage />} />
         <Route path="/post/:id" element={<PostPage />} />
