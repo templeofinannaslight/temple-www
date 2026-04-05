@@ -15,7 +15,7 @@ env:
 
 jobs:
   docker-build-and-push:
-    runs-on: hestia
+    runs-on: builder
 
     steps:
       - uses: actions/checkout@v4
@@ -103,7 +103,7 @@ jobs:
           type: deploy
           action: deploy_container
           instance: athena
-          service: blog
+          service: corp-www
           zone: ${{ env.AWS_REGION }}
           environment: ${{ env.ENV }}
 
@@ -116,6 +116,6 @@ jobs:
           streams: ci
           type: build
           action: failure
-          service: blog
+          service: corp-www
           instance: athena
           environment: ${{ env.ENV }}
