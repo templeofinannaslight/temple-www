@@ -38,6 +38,9 @@ COPY server ./server
 # Copy built static files from builder
 COPY --from=builder /app/dist ./dist
 
+# Copy static site
+COPY static-site ./static-site
+
 # Expose the server port
 EXPOSE 3001
 

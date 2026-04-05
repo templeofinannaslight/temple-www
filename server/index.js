@@ -363,6 +363,10 @@ ${urls.join('\n')}
     // Serve built static assets (JS, CSS, images)
     app.use(express.static(clientPath, { index: false }));
 
+    // Serve static site (takes priority over React SSR)
+    const staticSitePath = path.join(__dirname, '..', 'static-site');
+    app.use(express.static(staticSitePath));
+
     // Load the server-side render function
     const { render } = await import(path.join(__dirname, '..', 'dist', 'server', 'entry-server.js'));
     const template = fs.readFileSync(path.join(clientPath, 'index.html'), 'utf-8');
@@ -385,6 +389,10 @@ ${urls.join('\n')}
       appType: 'custom',
     });
     app.use(vite.middlewares);
+
+    // Serve static site in dev too
+    const staticSitePath = path.join(__dirname, '..', 'static-site');
+    app.use(express.static(staticSitePath));
 
     app.get('*path', async (req, res) => {
       try {
