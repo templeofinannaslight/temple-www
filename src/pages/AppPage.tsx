@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import { Video, ClipboardCheck, Bell, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
+import { Video, ClipboardCheck, Bell, Smartphone, Globe, ArrowRight } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
 import { trackEvent } from "@/lib/analytics";
 
@@ -40,17 +40,9 @@ const PLATFORMS = [
     icon: Smartphone,
     label: "Android",
     description: "Phone & Tablet",
-    url: "#", // TODO: Google Play link
+    url: "https://play.google.com/store/apps/details?id=live.meetingmaker.app.prod",
     buttonText: "Google Play",
     platform: "android",
-  },
-  {
-    icon: Monitor,
-    label: "Web App",
-    description: "Any browser",
-    url: "#", // TODO: Web app URL
-    buttonText: "Open Web App",
-    platform: "web",
   },
 ];
 
@@ -189,7 +181,7 @@ export function AppPage() {
           <p className="text-gray-300 text-center mb-12 max-w-2xl mx-auto">
             Available on every platform. Always free.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {PLATFORMS.map(({ icon: Icon, label, description, url, buttonText, platform }) => (
               <a
                 key={label}
