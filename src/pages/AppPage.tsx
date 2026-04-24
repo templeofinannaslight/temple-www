@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Video, ClipboardCheck, Bell, Smartphone, Monitor, Globe, ArrowRight } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
+import { trackEvent } from "@/lib/analytics";
 
 const FEATURES = [
   {
@@ -33,6 +34,7 @@ const PLATFORMS = [
     description: "iPhone & iPad",
     url: "https://apps.apple.com/us/app/recoverysky-aa-meetings/id1577014284",
     buttonText: "App Store",
+    platform: "ios",
   },
   {
     icon: Smartphone,
@@ -40,6 +42,7 @@ const PLATFORMS = [
     description: "Phone & Tablet",
     url: "#", // TODO: Google Play link
     buttonText: "Google Play",
+    platform: "android",
   },
   {
     icon: Monitor,
@@ -47,6 +50,7 @@ const PLATFORMS = [
     description: "Any browser",
     url: "#", // TODO: Web app URL
     buttonText: "Open Web App",
+    platform: "web",
   },
 ];
 
@@ -186,10 +190,11 @@ export function AppPage() {
             Available on every platform. Always free.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
-            {PLATFORMS.map(({ icon: Icon, label, description, url, buttonText }) => (
+            {PLATFORMS.map(({ icon: Icon, label, description, url, buttonText, platform }) => (
               <a
                 key={label}
                 href={url}
+                onClick={() => trackEvent("app_download", { platform })}
                 className="bg-accent/30 border-2 border-accent-dark rounded-xl p-8 text-center shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all block"
               >
                 <Icon className="w-10 h-10 text-brand-light mx-auto mb-4" />
@@ -215,6 +220,7 @@ export function AppPage() {
                 href="https://github.com/recoverysky-org/recoverysky-app"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("github_click", { location: "app_page" })}
                 className="text-brand-light hover:text-white transition-colors underline"
               >
                 GitHub

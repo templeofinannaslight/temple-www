@@ -18,6 +18,9 @@ services:
       - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
       - DIRECTUS_COLLECTION=${DIRECTUS_COLLECTION}
       - CORS_ORIGIN=${CORS_ORIGIN:-*}
+      - UMAMI_URL=${UMAMI_URL}
+      - UMAMI_X_API_KEY=${UMAMI_X_API_KEY}
+      - UMAMI_WEBSITE_ID=${UMAMI_WEBSITE_ID}
     healthcheck:
       test:
         [

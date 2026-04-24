@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Mail, ChevronDown, ChevronUp } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 const FAQS = [
   {
@@ -66,7 +67,10 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   return (
     <div className="border-2 border-accent-dark rounded-xl overflow-hidden transition-all hover:border-accent-light">
       <button
-        onClick={() => setOpen(!open)}
+        onClick={() => {
+          if (!open) trackEvent("faq_open", { question });
+          setOpen(!open);
+        }}
         className="w-full flex items-center justify-between gap-4 p-6 text-left"
       >
         <span className="text-lg font-semibold text-gray-100">{question}</span>
@@ -138,6 +142,7 @@ export function SupportPage() {
             </p>
             <a
               href="mailto:support@recoverysky.app"
+              onClick={() => trackEvent("support_email_click")}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               <Mail className="w-5 h-5" />

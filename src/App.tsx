@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { RootLayout } from "@/components/layout/RootLayout";
 import { HomePage } from "@/pages/HomePage";
@@ -9,6 +10,17 @@ import { SupportPage } from "@/pages/SupportPage";
 import { ResourcesPage } from "@/pages/ResourcesPage";
 import { DocumentPage } from "@/pages/DocumentPage";
 import { NotFoundPage } from "@/pages/NotFoundPage";
+import { trackPageview } from "@/lib/analytics";
+
+function PageviewTracker() {
+  const { pathname, search } = useLocation();
+  useEffect(() => {
+    // Defer one tick so react-helmet has applied the new <title>
+    const id = setTimeout(() => trackPageview(), 0);
+    return () => clearTimeout(id);
+  }, [pathname, search]);
+  return null;
+}
 
 function App() {
   return (
@@ -16,6 +28,7 @@ function App() {
       <Helmet>
         <meta property="og:site_name" content="RecoverySky" />
       </Helmet>
+      <PageviewTracker />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/app" element={<AppPage />} />

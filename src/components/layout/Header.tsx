@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 // import { LogIn, LogOut, Github } from "lucide-react";
 import { Github } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
+import { trackEvent } from "@/lib/analytics";
 
 // function AuthNav() {
 //   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
@@ -91,6 +92,7 @@ export function Header() {
               href="https://github.com/recoverysky-org/recoverysky-app"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackEvent("github_click", { location: "header" })}
               className="text-gray-300 hover:text-white transition-colors"
               title="GitHub"
             >

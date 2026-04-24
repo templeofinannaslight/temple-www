@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { BookOpen, ExternalLink } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 interface Resource {
   label: string;
@@ -42,12 +43,13 @@ const AA_RESOURCES: Resource[] = [
 
 type Tab = "aa" | "na";
 
-function ResourceCard({ label, url }: Resource) {
+function ResourceCard({ label, url, fellowship }: Resource & { fellowship: string }) {
   return (
     <a
       href={url}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={() => trackEvent("resource_click", { fellowship, label, url })}
       className="group flex items-center justify-between gap-3 bg-accent/20 border-2 border-accent-dark rounded-xl px-5 py-4 shadow-[0_0_15px_#26619c40] hover:border-accent-light hover:shadow-[0_0_25px_#26619c80] transition-all"
     >
       <div className="flex items-center gap-3 min-w-0">
@@ -113,7 +115,10 @@ export function ResourcesPage() {
             <div className="flex justify-center mb-12">
               <div className="inline-flex bg-accent/20 border-2 border-accent-dark rounded-xl p-1">
                 <button
-                  onClick={() => setTab("aa")}
+                  onClick={() => {
+                    setTab("aa");
+                    trackEvent("resources_tab", { fellowship: "aa" });
+                  }}
                   className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                     tab === "aa"
                       ? "bg-brand text-white border-2 border-neon shadow-[0_0_15px_#ff2d9550]"
@@ -123,7 +128,10 @@ export function ResourcesPage() {
                   AA Literature
                 </button>
                 <button
-                  onClick={() => setTab("na")}
+                  onClick={() => {
+                    setTab("na");
+                    trackEvent("resources_tab", { fellowship: "na" });
+                  }}
                   className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${
                     tab === "na"
                       ? "bg-brand text-white border-2 border-neon shadow-[0_0_15px_#ff2d9550]"
@@ -144,7 +152,7 @@ export function ResourcesPage() {
             {/* Resource Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {resources.map((resource) => (
-                <ResourceCard key={resource.url} {...resource} />
+                <ResourceCard key={resource.url} {...resource} fellowship={tab} />
               ))}
             </div>
 

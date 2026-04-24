@@ -15,6 +15,7 @@ import { fetchPosts } from "@/lib/api";
 import { formatDate, slugify } from "@/lib/format";
 import type { Post } from "@/lib/types";
 import logo from "@/assets/recoverysky-signature-white.png";
+import { trackEvent } from "@/lib/analytics";
 
 const VALUES = [
   {
@@ -233,6 +234,7 @@ export function HomePage() {
             </p>
             <a
               href="mailto:hello@recoverysky.org"
+              onClick={() => trackEvent("contact_email_click")}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               <Mail className="w-5 h-5" />

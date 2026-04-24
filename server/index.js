@@ -13,12 +13,20 @@ const __dirname = path.dirname(__filename);
 const PORT = process.env.PORT || 3001;
 const NODE_ENV = process.env.NODE_ENV || 'development';
 
-const DIRECTUS_URL = process.env.DIRECTUS_URL || 'https://content.rso';
+const DIRECTUS_URL = process.env.DIRECTUS_URL || 'http://apps_directus';
 const DIRECTUS_TOKEN = process.env.DIRECTUS_TOKEN;
 const DIRECTUS_COLLECTION = process.env.DIRECTUS_COLLECTION || 'Mikkis_Mess';
 
+const UMAMI_URL = process.env.UMAMI_URL || 'https://umami.recoverysky.app';
+const UMAMI_X_API_KEY = process.env.UMAMI_X_API_KEY;
+const UMAMI_WEBSITE_ID = process.env.UMAMI_WEBSITE_ID;
+
 if (!DIRECTUS_TOKEN) {
   console.warn('⚠️  No DIRECTUS_TOKEN found - will try public access');
+}
+
+if (!UMAMI_X_API_KEY || !UMAMI_WEBSITE_ID) {
+  console.warn('⚠️  Umami server-side tracking disabled (missing UMAMI_X_API_KEY or UMAMI_WEBSITE_ID)');
 }
 
 async function createServer() {
@@ -29,6 +37,9 @@ async function createServer() {
     origin: process.env.CORS_ORIGIN || 'http://localhost:5173',
     credentials: true
   }));
+
+  // Parse JSON bodies for API endpoints that accept them
+  app.use(express.json({ limit: '32kb' }));
 
   // --- Shared helpers ---
 
@@ -353,6 +364,59 @@ ${urls.join('\n')}
   // Health check
   app.get('/health', (req, res) => {
     res.json({ status: 'ok', service: 'recoverysky-blog-api' });
+  });
+
+  // Umami tracking proxy — handles both pageviews and custom events
+  app.post('/api/track', async (req, res) => {
+    if (!UMAMI_X_API_KEY || !UMAMI_WEBSITE_ID) {
+      return res.status(204).end();
+    }
+
+    const { name, data, url, referrer, title, screen, language } = req.body || {};
+
+    try {
+      const userAgent = req.get('user-agent') || '';
+      const hostname = req.get('host') || '';
+      const ip = (req.headers['x-forwarded-for'] || req.socket.remoteAddress || '').toString().split(',')[0].trim();
+
+      // Umami infers pageview vs event from presence of `name`
+      const payload = {
+        type: 'event',
+        payload: {
+          website: UMAMI_WEBSITE_ID,
+          hostname,
+          url: url || '/',
+          referrer: referrer || '',
+          title: title || '',
+          language: language || '',
+          screen: screen || '',
+          ...(name ? { name } : {}),
+          ...(data && typeof data === 'object' ? { data } : {}),
+        },
+      };
+
+      const response = await fetch(new URL('/api/send', UMAMI_URL).toString(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': userAgent,
+          'X-Forwarded-For': ip,
+          'x-api-key': UMAMI_X_API_KEY,
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        console.error(`❌ Umami error (${response.status}):`, text);
+        return res.status(response.status).json({ error: 'Umami error', message: text });
+      }
+
+      res.status(204).end();
+    } catch (error) {
+      console.error('❌ Umami track error:', error);
+      res.status(500).json({ error: 'Internal server error', message: error.message });
+    }
   });
 
   // --- SSR ---
