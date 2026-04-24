@@ -186,6 +186,8 @@ export function AppPage() {
               <a
                 key={label}
                 href={url}
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => trackEvent("app_download", { platform })}
                 className="bg-accent/30 border-2 border-accent-dark rounded-xl p-8 text-center shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all block"
               >
