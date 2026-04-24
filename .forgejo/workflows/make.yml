@@ -100,7 +100,7 @@ jobs:
           set -euxo pipefail
                                                                                                                         
           eval $(ssh-agent -s)
-          echo "${{ secrets.RUNNER_SSH_PRIVATE_KEY }}" | ssh-add -
+          echo "${{ secrets.RUNNER_SSH_PRIVATE_KEY }}" | base64 -d | ssh-add -
 
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
