@@ -97,11 +97,18 @@ jobs:
       
       - name: Deploy to swarm
         run: |
+          set -euxo pipefail
+                                                                                                                        
+          eval $(ssh-agent -s)
+          echo "${{ secrets.RUNNER_SSH_PRIVATE_KEY }}" | ssh-add -
+
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o LogLevel=ERROR \
               ec2-user@klotho.prod.rso "swarm restart ${{ env.STACK }} ${{ github.event.repository.name }}"
-      
+
+          eval $(ssh-agent -k)
+        
       - name: Notify build failure
         if: failure()
         uses: ./.forgejo/actions/webhook
