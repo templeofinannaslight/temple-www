@@ -93,20 +93,14 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=registry,ref=${{ secrets.AWS_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.repository.name }}:cache-${{ github.sha }}
           cache-to: type=registry,ref=${{ secrets.AWS_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.repository.name }}:cache-${{ github.sha }},mode=max
-
-      - name: Trigger deployment
-        uses: ./.forgejo/actions/webhook
-        with:
-          webhook_url: https://webhook.rso/webhooks
-          webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
-          streams: eda
-          type: deploy
-          action: deploy_container
-          instance: athena
-          service: corp-www
-          zone: ${{ env.AWS_REGION }}
-          environment: ${{ env.ENV }}
-
+      
+      - name: Deploy to swarm
+        run: |         
+          ssh -o StrictHostKeyChecking=no \                                                                                                                                           
+              -o UserKnownHostsFile=/dev/null \                     
+              -o LogLevel=ERROR \
+              ec2-user@klotho.prod.rso "swarm restart web corp-www"     
+      
       - name: Notify build failure
         if: failure()
         uses: ./.forgejo/actions/webhook
