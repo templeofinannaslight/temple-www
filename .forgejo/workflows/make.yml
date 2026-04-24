@@ -12,7 +12,7 @@ permissions:
 env:
   ENV: "prod"
   AWS_REGION: "us-east-1"
-  STACK: "apps"
+  STACK: "web"
 
 jobs:
   docker-build-and-push:
