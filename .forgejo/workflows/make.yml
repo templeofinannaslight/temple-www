@@ -12,6 +12,7 @@ permissions:
 env:
   ENV: "prod"
   AWS_REGION: "us-east-1"
+  STACK: "apps"
 
 jobs:
   docker-build-and-push:
@@ -95,11 +96,11 @@ jobs:
           cache-to: type=registry,ref=${{ secrets.AWS_ID }}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ github.event.repository.name }}:cache-${{ github.sha }},mode=max
       
       - name: Deploy to swarm
-        run: |         
-          ssh -o StrictHostKeyChecking=no \                                                                                                                                           
-              -o UserKnownHostsFile=/dev/null \                     
+        run: |
+          ssh -o StrictHostKeyChecking=no \
+              -o UserKnownHostsFile=/dev/null \
               -o LogLevel=ERROR \
-              ec2-user@klotho.prod.rso "swarm restart web corp-www"     
+              ec2-user@klotho.prod.rso "swarm restart ${{ env.STACK }} ${{ github.event.repository.name }}"
       
       - name: Notify build failure
         if: failure()
