@@ -37,7 +37,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/25 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/90 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
         Prev
       </button>
@@ -55,7 +55,7 @@ export function Pagination({
               className={`w-10 h-10 text-sm font-medium rounded-lg transition-all ${
                 currentPage === page
                   ? "bg-brand text-white border-2 border-accent-light shadow-[0_0_25px_#26619ca0]"
-                  : "text-gray-100 bg-accent/25 border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0]"
+                  : "text-gray-100 bg-accent/90 border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0]"
               }`}
             >
               {page}
@@ -67,7 +67,7 @@ export function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/25 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+        className="px-3 py-2 text-sm font-medium text-gray-100 bg-accent/90 border-2 border-accent-dark rounded-lg hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
       >
         Next
       </button>

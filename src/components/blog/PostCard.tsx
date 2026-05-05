@@ -15,7 +15,7 @@ export function PostCard({ post, onTagClick }: PostCardProps) {
 
   return (
     <Link to={postUrl} className="block group">
-      <Card className="bg-accent/30 border-2 border-accent-dark shadow-[0_0_20px_#26619c70] group-hover:border-accent-light group-hover:shadow-[0_0_35px_#26619ca0] transition-all duration-200">
+      <Card className="bg-accent/90 border-2 border-accent-dark shadow-[0_0_20px_#26619c70] group-hover:border-accent-light group-hover:shadow-[0_0_35px_#26619ca0] transition-all duration-200">
         {post.featured_image && (
           <div className="overflow-hidden rounded-t-lg">
             <img

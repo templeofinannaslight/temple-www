@@ -50,7 +50,7 @@ function ResourceCard({ label, url, fellowship }: Resource & { fellowship: strin
       target="_blank"
       rel="noopener noreferrer"
       onClick={() => trackEvent("resource_click", { fellowship, label, url })}
-      className="group flex items-center justify-between gap-3 bg-accent/20 border-2 border-accent-dark rounded-xl px-5 py-4 shadow-[0_0_15px_#26619c40] hover:border-accent-light hover:shadow-[0_0_25px_#26619c80] transition-all"
+      className="group flex items-center justify-between gap-3 bg-accent/90 border-2 border-accent-dark rounded-xl px-5 py-4 shadow-[0_0_15px_#26619c40] hover:border-accent-light hover:shadow-[0_0_25px_#26619c80] transition-all"
     >
       <div className="flex items-center gap-3 min-w-0">
         <BookOpen className="w-4 h-4 text-brand-light shrink-0" />
@@ -113,7 +113,7 @@ export function ResourcesPage() {
           <div className="max-w-4xl mx-auto">
             {/* Tab Switcher */}
             <div className="flex justify-center mb-12">
-              <div className="inline-flex bg-accent/20 border-2 border-accent-dark rounded-xl p-1">
+              <div className="inline-flex bg-accent/90 border-2 border-accent-dark rounded-xl p-1">
                 <button
                   onClick={() => {
                     setTab("aa");

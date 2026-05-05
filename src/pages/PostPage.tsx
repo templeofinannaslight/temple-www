@@ -110,7 +110,7 @@ export function PostPage() {
           Back to blog
         </Link>
 
-        <div className="bg-accent/30 border-2 border-accent-dark rounded-2xl shadow-[0_0_20px_#26619c70] overflow-hidden">
+        <div className="bg-accent/90 border-2 border-accent-dark rounded-2xl shadow-[0_0_20px_#26619c70] overflow-hidden">
           {post.featured_image && (
             <img
               src={`/api/assets/${post.featured_image}?width=1200&height=600&fit=cover`}

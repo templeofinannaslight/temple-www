@@ -65,7 +65,7 @@ function FAQItem({ question, answer }: { question: string; answer: string }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="border-2 border-accent-dark rounded-xl overflow-hidden transition-all hover:border-accent-light">
+    <div className="bg-accent/90 border-2 border-accent-dark rounded-xl overflow-hidden transition-all hover:border-accent-light">
       <button
         onClick={() => {
           if (!open) trackEvent("faq_open", { question });
@@ -129,7 +129,7 @@ export function SupportPage() {
       {/* Email Support */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-accent/30 border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560] text-center">
+          <div className="max-w-3xl mx-auto bg-accent/90 border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560] text-center">
             <div className="w-16 h-16 bg-brand/20 rounded-xl flex items-center justify-center mx-auto mb-6">
               <Mail className="w-8 h-8 text-brand-light" />
             </div>
