@@ -3,7 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 // import { useAuth0 } from "@auth0/auth0-react";
 // import { LogIn, LogOut, Github } from "lucide-react";
 import { Github } from "lucide-react";
-import logo from "@/assets/recoverysky-signature-white.png";
 import { trackEvent } from "@/lib/analytics";
 
 // function AuthNav() {
@@ -71,9 +70,9 @@ export function Header() {
         <div className="flex items-center justify-between py-4">
           <Link to="/" className="flex items-center">
             <img
-              src={logo}
-              alt="RecoverySky"
-              className="h-24 w-auto"
+              src="/templeofinannaslight-banner.png"
+              alt="Temple of Inanna's Light"
+              className="h-20 sm:h-24 w-auto rounded-xl"
             />
           </Link>
           <nav className="flex items-center gap-6">
