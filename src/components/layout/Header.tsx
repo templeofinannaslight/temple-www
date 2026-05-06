@@ -1,24 +1,47 @@
 // import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import { useLocation } from "react-router-dom";
 // import { useAuth0 } from "@auth0/auth0-react";
-// import { LogIn, LogOut, Github } from "lucide-react";
-// import { Github } from "lucide-react";
+// import { LogIn, LogOut, User } from "lucide-react";
 // import { trackEvent } from "@/lib/analytics";
 
 // function AuthNav() {
 //   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
 //
+//   const fab =
+//     "w-10 h-10 rounded-full flex items-center justify-center transition-all border-2";
+//
 //   if (isAuthenticated) {
+//     const displayName = user?.name || user?.email || "Logged in";
 //     return (
 //       <div className="flex items-center gap-3">
-//         <span className="text-sm text-gray-300">{user?.name || user?.email}</span>
 //         <button
-//           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-//           className="inline-flex items-center gap-1.5 text-sm px-3 py-1.5 bg-accent/25 border-2 border-accent-dark rounded-lg text-gray-200 hover:border-accent-light hover:text-white transition-all"
+//           type="button"
+//           aria-label={`Profile — ${displayName}`}
+//           title={`Logged in as ${displayName}`}
+//           className={`${fab} bg-accent/40 backdrop-blur-md text-white border-accent-light shadow-[0_0_15px_#26619c50] hover:shadow-[0_0_25px_#26619c80] overflow-hidden`}
 //         >
-//           <LogOut className="w-3.5 h-3.5" />
-//           Logout
+//           {user?.picture ? (
+//             <img
+//               src={user.picture}
+//               alt={displayName}
+//               className="w-full h-full object-cover"
+//               referrerPolicy="no-referrer"
+//             />
+//           ) : (
+//             <User className="w-5 h-5" />
+//           )}
+//         </button>
+//         <button
+//           type="button"
+//           onClick={() => {
+//             trackEvent("auth_logout_click", { location: "header" });
+//             logout({ logoutParams: { returnTo: window.location.origin } });
+//           }}
+//           aria-label="Log out"
+//           title="Log out"
+//           className={`${fab} bg-brand text-white border-neon shadow-[0_0_15px_#ff2d9550] hover:shadow-[0_0_25px_#ff2d9580]`}
+//         >
+//           <LogOut className="w-5 h-5" />
 //         </button>
 //       </div>
 //     );
@@ -26,44 +49,26 @@ import { Link } from "react-router-dom";
 //
 //   return (
 //     <button
-//       onClick={() => loginWithRedirect()}
-//       className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-brand text-white rounded-lg border-2 border-neon shadow-[0_0_15px_#ff2d9550] hover:shadow-[0_0_25px_#ff2d9580] transition-all"
+//       type="button"
+//       onClick={() => {
+//         trackEvent("auth_login_click", { location: "header" });
+//         loginWithRedirect();
+//       }}
+//       aria-label="Log in"
+//       title="Log in"
+//       className={`${fab} bg-brand text-white border-neon shadow-[0_0_15px_#ff2d9550] hover:shadow-[0_0_25px_#ff2d9580]`}
 //     >
-//       <LogIn className="w-3.5 h-3.5" />
-//       Portal
+//       <LogIn className="w-5 h-5" />
 //     </button>
 //   );
 // }
 
-// function PortalFallback() {
-//   return (
-//     <span className="inline-flex items-center gap-1.5 text-sm px-4 py-1.5 bg-brand text-white rounded-lg border-2 border-neon shadow-[0_0_15px_#ff2d9550]">
-//       <LogIn className="w-3.5 h-3.5" />
-//       Portal
-//     </span>
-//   );
-// }
-
 export function Header() {
-  // const { pathname } = useLocation();
   // const [mounted, setMounted] = useState(false);
-
+  //
   // useEffect(() => {
   //   setMounted(true);
   // }, []);
-
-  // const navLink = (to: string, label: string) => (
-  //   <Link
-  //     to={to}
-  //     className={`text-sm transition-colors ${
-  //       pathname === to
-  //         ? "text-white font-medium"
-  //         : "text-gray-300 hover:text-white"
-  //     }`}
-  //   >
-  //     {label}
-  //   </Link>
-  // );
 
   return (
     <header className="sticky top-0 z-50 bg-accent/40 backdrop-blur-md border-b-2 border-neon shadow-[0_2px_30px_#ff2d9570]">
@@ -77,25 +82,7 @@ export function Header() {
             />
           </Link>
           <nav className="flex items-center gap-6">
-            {/* {navLink("/", "Home")} */}
-            {/* {navLink("/blog", "Blog")} */}
-            {/* <Link
-              to="/#contact"
-              className="text-sm text-gray-300 hover:text-white transition-colors"
-            >
-              Contact
-            </Link> */}
-            {/* <a
-              href="https://github.com/recoverysky-org/recoverysky-app"
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => trackEvent("github_click", { location: "header" })}
-              className="text-gray-300 hover:text-white transition-colors"
-              title="GitHub"
-            >
-              <Github className="w-5 h-5" />
-            </a> */}
-            {/* {mounted ? <AuthNav /> : <PortalFallback />} */}
+            {/* {mounted && <AuthNav />} */}
           </nav>
         </div>
       </div>
