@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { Sparkles, Users, Target, Eye, Heart } from "lucide-react";
 // import { ArrowRight } from "lucide-react";
+// import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { fetchPosts } from "@/lib/api";
-import { formatDate, slugify } from "@/lib/format";
-import type { Post } from "@/lib/types";
 import { trackEvent } from "@/lib/analytics";
 
 const MISSION_QUOTES = [
@@ -123,7 +121,6 @@ function QuoteBlock({ text, attribution }: { text: string; attribution: string }
 
 export function HomePage() {
   const { hash } = useLocation();
-  const [recentPosts, setRecentPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     if (hash) {
@@ -133,18 +130,6 @@ export function HomePage() {
       window.scrollTo(0, 0);
     }
   }, [hash]);
-
-  useEffect(() => {
-    fetchPosts({
-      sortOrder: "desc",
-      pageSize: 3,
-      currentPage: 1,
-      searchQuery: "",
-      selectedTag: null,
-    })
-      .then(({ posts }) => setRecentPosts(posts))
-      .catch(() => {});
-  }, []);
 
   return (
     <div>
@@ -408,47 +393,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Latest Blog Posts */}
-      {recentPosts.length > 0 && (
-        <section className="py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-100 mb-4 text-center">
-              Latest Temple Sermons
-            </h2>
-            <p className="text-gray-300 text-center mb-12 max-w-2xl mx-auto">
-              Reflections, teachings, and announcements from our clergy and community.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 max-w-5xl mx-auto">
-              {recentPosts.map((post) => (
-                <Link
-                  key={post.id}
-                  to={`/post/${post.id}/${slugify(post.title)}`}
-                  className="group w-full md:w-[calc(33.333%-1rem)] bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-xl overflow-hidden shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
-                >
-                  {post.featured_image && (
-                    <img
-                      src={`/api/assets/${post.featured_image}?width=600&height=300&fit=cover`}
-                      alt={post.title}
-                      className="w-full h-40 object-cover group-hover:scale-[1.02] transition-transform duration-300"
-                    />
-                  )}
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-100 group-hover:text-brand-light transition-colors mb-2 line-clamp-2">
-                      {post.title}
-                    </h3>
-                    {post.excerpt && (
-                      <p className="text-sm text-gray-300 line-clamp-2 mb-3">{post.excerpt}</p>
-                    )}
-                    <p className="text-xs text-gray-400">
-                      {formatDate(post.written_date || post.date_created)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Closing Banner */}
       <section className="py-20">
