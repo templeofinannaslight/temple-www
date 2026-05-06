@@ -297,7 +297,7 @@ export function HomePage() {
             <p className="text-gray-300 text-lg leading-relaxed mt-8 pt-8 border-t border-accent-dark/60">
               <span className="font-semibold text-gray-100">In plain words:</span>{" "}
               The Temple of 𒀭Inanna's Light exists to serve 𒀭Inanna and Her
-              people — to help every soul who comes to Her find Her, know Her,
+              people — to help every soul who comes to Her to find Her, know Her,
               and forge a lasting personal relationship with Her; to revive the
               warmth, safety, and comradery of Her ancient temple complex at
               Unug (Uruk); and to be a sanctuary where the marginalized, the
