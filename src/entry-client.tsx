@@ -9,14 +9,26 @@ import App from "./App";
 
 const ssrData: SSRData = (window as any).__SSR_DATA__ || {};
 
+const AUTH0_DOMAIN = import.meta.env.AUTH0_DOMAIN || "";
+const AUTH0_CLIENT_ID = import.meta.env.AUTH0_CLIENT_ID || "";
+const AUTH0_AUDIENCE = import.meta.env.AUTH0_AUDIENCE || "";
+const AUTH0_SCOPE = import.meta.env.AUTH0_SCOPE || "";
+
 hydrateRoot(
   document.getElementById("root")!,
   <StrictMode>
     <HelmetProvider>
       <Auth0Provider
-        domain="meetingmaker.us.auth0.com"
-        clientId="yzfwOaU5V5wlnSKGsUkUk6mz7IidXaJl"
-        authorizationParams={{ redirect_uri: window.location.origin }}
+        domain={AUTH0_DOMAIN}
+        clientId={AUTH0_CLIENT_ID}
+        cacheLocation="localstorage"
+        useRefreshTokens={true}
+        useRefreshTokensFallback={true}
+        authorizationParams={{
+          redirect_uri: window.location.origin,
+          ...(AUTH0_AUDIENCE ? { audience: AUTH0_AUDIENCE } : {}),
+          ...(AUTH0_SCOPE ? { scope: AUTH0_SCOPE } : {}),
+        }}
       >
         <BrowserRouter>
           <SSRDataProvider data={ssrData}>
