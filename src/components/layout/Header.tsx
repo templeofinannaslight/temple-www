@@ -74,12 +74,23 @@ export function Header() {
     <header className="sticky top-0 z-50 bg-accent/40 backdrop-blur-md border-b-2 border-neon shadow-[0_2px_30px_#ff2d9570]">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between py-4">
-          <Link to="/" className="flex items-center">
+          <Link to="/" className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-2 sm:gap-5">
             <img
               src="/templeofinannaslight-banner.png"
               alt="Temple of Inanna's Light"
-              className="h-20 sm:h-24 w-auto rounded-xl"
+              className="max-h-20 sm:max-h-24 max-w-full w-auto h-auto rounded-xl"
             />
+            <div className="flex flex-col items-center">
+              <p
+                lang="sux"
+                className="text-4xl sm:text-5xl text-white leading-tight whitespace-nowrap"
+              >
+                𒂍𒃲 𒄑𒉢𒈾 𒀭𒈹𒆤
+              </p>
+              <p className="text-2xl sm:text-3xl text-white italic whitespace-nowrap">
+                E<sub>2</sub>-gal Ŋes-ŋu<sub>11</sub> 𒀭Inanna-ke<sub>4</sub>
+              </p>
+            </div>
           </Link>
           <nav className="flex items-center gap-6">
             {/* {mounted && <AuthNav />} */}
