@@ -1,9 +1,10 @@
 // import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 // import { useAuth0 } from "@auth0/auth0-react";
 // import { LogIn, LogOut, Github } from "lucide-react";
-import { Github } from "lucide-react";
-import { trackEvent } from "@/lib/analytics";
+// import { Github } from "lucide-react";
+// import { trackEvent } from "@/lib/analytics";
 
 // function AuthNav() {
 //   const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
@@ -44,25 +45,25 @@ import { trackEvent } from "@/lib/analytics";
 // }
 
 export function Header() {
-  const { pathname } = useLocation();
+  // const { pathname } = useLocation();
   // const [mounted, setMounted] = useState(false);
 
   // useEffect(() => {
   //   setMounted(true);
   // }, []);
 
-  const navLink = (to: string, label: string) => (
-    <Link
-      to={to}
-      className={`text-sm transition-colors ${
-        pathname === to
-          ? "text-white font-medium"
-          : "text-gray-300 hover:text-white"
-      }`}
-    >
-      {label}
-    </Link>
-  );
+  // const navLink = (to: string, label: string) => (
+  //   <Link
+  //     to={to}
+  //     className={`text-sm transition-colors ${
+  //       pathname === to
+  //         ? "text-white font-medium"
+  //         : "text-gray-300 hover:text-white"
+  //     }`}
+  //   >
+  //     {label}
+  //   </Link>
+  // );
 
   return (
     <header className="sticky top-0 z-50 bg-accent/40 backdrop-blur-md border-b-2 border-neon shadow-[0_2px_30px_#ff2d9570]">
@@ -76,18 +77,15 @@ export function Header() {
             />
           </Link>
           <nav className="flex items-center gap-6">
-            {navLink("/", "Home")}
-            {navLink("/app", "App")}
-            {navLink("/blog", "Blog")}
-            {navLink("/resources", "Resources")}
-            {navLink("/support", "Support")}
-            <Link
+            {/* {navLink("/", "Home")} */}
+            {/* {navLink("/blog", "Blog")} */}
+            {/* <Link
               to="/#contact"
               className="text-sm text-gray-300 hover:text-white transition-colors"
             >
               Contact
-            </Link>
-            <a
+            </Link> */}
+            {/* <a
               href="https://github.com/recoverysky-org/recoverysky-app"
               target="_blank"
               rel="noopener noreferrer"
@@ -96,7 +94,7 @@ export function Header() {
               title="GitHub"
             >
               <Github className="w-5 h-5" />
-            </a>
+            </a> */}
             {/* {mounted ? <AuthNav /> : <PortalFallback />} */}
           </nav>
         </div>
