@@ -217,7 +217,7 @@ export function HomePage() {
           <img
             src="/templeofinannaslight-logo.png"
             alt="Temple of Inanna's Light"
-            className="h-32 sm:h-40 w-auto mx-auto mb-8"
+            className="h-64 sm:h-80 w-auto mx-auto mb-8"
           />
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-6 max-w-4xl mx-auto leading-tight">
             <span
