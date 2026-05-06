@@ -42,7 +42,7 @@ export function FilterBar({
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search posts..."
-              className="w-full px-4 py-2.5 pl-10 bg-accent/90 border-2 border-accent-dark rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all"
+              className="w-full px-4 py-2.5 pl-10 bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-lg text-gray-200 placeholder-gray-400 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           </div>
@@ -50,7 +50,7 @@ export function FilterBar({
 
         <button
           onClick={onSortChange}
-          className="flex items-center gap-2 px-4 py-2.5 bg-accent/90 border-2 border-accent-dark rounded-lg text-gray-200 hover:text-white hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all whitespace-nowrap"
+          className="flex items-center gap-2 px-4 py-2.5 bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-lg text-gray-200 hover:text-white hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all whitespace-nowrap"
         >
           <ArrowUpDown className="w-4 h-4" />
           {sortOrder === "asc" ? "Oldest First" : "Newest First"}
@@ -59,7 +59,7 @@ export function FilterBar({
         <select
           value={pageSize}
           onChange={(e) => onPageSizeChange(Number(e.target.value))}
-          className="px-4 py-2.5 bg-accent/90 border-2 border-accent-dark rounded-lg text-gray-200 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all cursor-pointer"
+          className="px-4 py-2.5 bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-lg text-gray-200 focus:outline-none focus:border-accent-light focus:shadow-[0_0_30px_#26619ca0] transition-all cursor-pointer"
         >
           {PAGE_SIZE_OPTIONS.map((size) => (
             <option key={size} value={size}>
@@ -71,7 +71,7 @@ export function FilterBar({
 
       {allTags.length > 0 && (
         <div className="flex gap-3">
-          <div className="flex-1 bg-accent/90 border-2 border-accent-dark rounded-lg overflow-hidden">
+          <div className="flex-1 bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-lg overflow-hidden">
             <button
               onClick={() => setTagsExpanded(!tagsExpanded)}
               className="w-full flex items-center justify-between px-4 py-2.5 text-gray-200 hover:text-white transition-colors"

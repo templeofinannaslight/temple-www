@@ -162,7 +162,7 @@ export function HomePage() {
       </Helmet>
 
       {/* Hero */}
-      <section className="relative py-24 sm:py-32">
+      <section className="relative pt-12 sm:pt-16 pb-24 sm:pb-32">
         <div className="container mx-auto px-4 text-center">
           <img
             src="/templeofinannaslight-logo.png"
@@ -185,20 +185,6 @@ export function HomePage() {
             all stand in Her light together.
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-            <Link
-              to="/blog"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
-            >
-              Temple Sermons
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-            <a
-              href="#values"
-              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
-            >
-              <Sparkles className="w-5 h-5" />
-              Our Values
-            </a>
             <a
               href="#join"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
@@ -206,6 +192,20 @@ export function HomePage() {
               <Users className="w-5 h-5" />
               Join the Temple
             </a>
+            <a
+              href="#values"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
+            >
+              <Sparkles className="w-5 h-5" />
+              Our Values
+            </a>
+            <Link
+              to="/blog"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
+            >
+              Temple Sermons
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
@@ -213,7 +213,7 @@ export function HomePage() {
       {/* Mission */}
       <section id="mission" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-accent/90 border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
+          <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
             <div className="text-center mb-10">
               <p className="text-sm uppercase tracking-widest text-brand-light mb-3">🕊️ Mission</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-100">
@@ -239,7 +239,7 @@ export function HomePage() {
       {/* Vision */}
       <section id="vision" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-accent/90 border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
+          <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
             <div className="text-center mb-10">
               <p className="text-sm uppercase tracking-widest text-brand-light mb-3">🌅 Vision</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-100">
@@ -266,7 +266,7 @@ export function HomePage() {
       {/* Who We Are */}
       <section id="who-we-are" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto bg-accent/90 border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560]">
+          <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560]">
             <div className="text-center mb-10">
               <p className="text-sm uppercase tracking-widest text-brand-light mb-3">💖 Who We Are</p>
               <h2 className="text-3xl sm:text-4xl font-bold text-gray-100">
@@ -309,7 +309,7 @@ export function HomePage() {
             {VALUES.map(({ icon, title, text }) => (
               <div
                 key={title}
-                className="bg-accent/90 border-2 border-accent-dark rounded-xl p-8 shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
+                className="bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-xl p-8 shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
               >
                 <div className="w-14 h-14 bg-brand/20 rounded-lg flex items-center justify-center mb-5 text-3xl">
                   <span aria-hidden="true">{icon}</span>
@@ -337,7 +337,7 @@ export function HomePage() {
                 <Link
                   key={post.id}
                   to={`/post/${post.id}/${slugify(post.title)}`}
-                  className="group w-full md:w-[calc(33.333%-1rem)] bg-accent/90 border-2 border-accent-dark rounded-xl overflow-hidden shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
+                  className="group w-full md:w-[calc(33.333%-1rem)] bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-xl overflow-hidden shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
                 >
                   {post.featured_image && (
                     <img
@@ -367,7 +367,7 @@ export function HomePage() {
       {/* Closing Banner */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-accent/90 border-2 border-neon rounded-2xl p-10 sm:p-14 shadow-[0_0_25px_#ff2d9560] text-center">
+          <div className="max-w-3xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-10 sm:p-14 shadow-[0_0_25px_#ff2d9560] text-center">
             <p className="text-2xl sm:text-3xl text-gray-100 leading-relaxed font-light italic mb-6">
               "𒀭Inanna understands your struggle, and She wishes you to find
               comfort and safety within Her Temple. You are loved, and you are
@@ -381,7 +381,7 @@ export function HomePage() {
       {/* Join the Temple */}
       <section id="join" className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-accent/90 border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560] text-center">
+          <div className="max-w-3xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560] text-center">
             <h2 className="text-3xl font-bold text-gray-100 mb-4">Ready to Join Us?</h2>
             <p className="text-gray-300 text-lg mb-8 max-w-xl mx-auto">
               Our community gathers in 𒀭Inanna's light on Discord — a sanctuary

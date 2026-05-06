@@ -88,7 +88,7 @@ export function AppPage() {
       {/* Anonymous Access Highlight */}
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-5xl mx-auto bg-accent/90 border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560]">
+          <div className="max-w-5xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560]">
             <div className="flex flex-col md:flex-row items-center gap-10">
               <div className="flex gap-4 justify-center shrink-0">
                 <img
@@ -189,7 +189,7 @@ export function AppPage() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackEvent("app_download", { platform })}
-                className="bg-accent/90 border-2 border-accent-dark rounded-xl p-8 text-center shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all block"
+                className="bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-xl p-8 text-center shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all block"
               >
                 <Icon className="w-10 h-10 text-brand-light mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-white mb-1">{label}</h3>
@@ -206,7 +206,7 @@ export function AppPage() {
       {/* Globe icon for web */}
       <section className="py-10 pb-20">
         <div className="container mx-auto px-4 text-center">
-          <div className="inline-flex items-center gap-3 bg-accent/90 border-2 border-accent-dark rounded-full px-6 py-3">
+          <div className="inline-flex items-center gap-3 bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-full px-6 py-3">
             <Globe className="w-5 h-5 text-brand-light" />
             <span className="text-gray-300 text-sm">
               Open source on{" "}

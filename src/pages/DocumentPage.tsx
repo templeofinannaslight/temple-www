@@ -115,7 +115,7 @@ export function DocumentPage() {
 
       <section className="pb-20">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto bg-accent/90 border-2 border-accent-dark rounded-2xl shadow-[0_0_20px_#26619c70] p-8 sm:p-12">
+          <div className="max-w-3xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-2xl shadow-[0_0_20px_#26619c70] p-8 sm:p-12">
             <div
               className="prose prose-invert prose-lg max-w-none
                 prose-headings:text-gray-100 prose-headings:font-semibold
