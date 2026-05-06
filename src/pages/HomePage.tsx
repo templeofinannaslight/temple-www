@@ -199,13 +199,13 @@ export function HomePage() {
               <Sparkles className="w-5 h-5" />
               Our Values
             </a>
-            <Link
+            {/* <Link
               to="/blog"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               Temple Sermons
               <ArrowRight className="w-5 h-5" />
-            </Link>
+            </Link> */}
           </div>
         </div>
       </section>
