@@ -156,7 +156,7 @@ export function HomePage() {
         />
         <meta
           name="keywords"
-          content="Inanna, Ishtar, Inanna worship, Ishtar worship, Sumerian goddess, Mesopotamian polytheism, Mesopotamian paganism, Anunna-Umun, Ishtaritism, Reconstructionist Revivalist, Uruk, Unug, modern temple, queer pagan, trans pagan, LGBTQ pagan, Sumerian religion, ancient Mesopotamian religion"
+          content="Inanna, Ishtar, Inanna worship, Ishtar worship, Sumerian goddess, Mesopotamian polytheism, Mesopotamian paganism, Anunna-Umun, Ishtaritism, Reconstructionist Revivalist, Uruk, Unug, modern temple, queer pagan, trans pagan, LGBTQ pagan, Sumerian religion, ancient Mesopotamian religion, Entu Siri Ninkurgarra, Entu Meadow, Siri Nin, Siri Ninkurgarra"
         />
         <meta name="author" content="Temple of Inanna's Light" />
         <meta name="robots" content="index, follow" />
