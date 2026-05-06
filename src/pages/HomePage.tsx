@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Sparkles, Users } from "lucide-react";
+import { Sparkles, Users, Target, Eye, Heart } from "lucide-react";
 // import { ArrowRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { fetchPosts } from "@/lib/api";
@@ -258,6 +258,27 @@ export function HomePage() {
               Join the Temple
             </a>
             <a
+              href="#mission"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
+            >
+              <Target className="w-5 h-5" />
+              Mission
+            </a>
+            <a
+              href="#vision"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
+            >
+              <Eye className="w-5 h-5" />
+              Vision
+            </a>
+            <a
+              href="#who-we-are"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
+            >
+              <Heart className="w-5 h-5" />
+              Who We Are
+            </a>
+            <a
               href="#values"
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
             >
@@ -276,7 +297,7 @@ export function HomePage() {
       </section>
 
       {/* Mission */}
-      <section id="mission" className="py-20">
+      <section id="mission" className="scroll-mt-32 sm:scroll-mt-40 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
             <div className="text-center mb-10">
@@ -302,7 +323,7 @@ export function HomePage() {
       </section>
 
       {/* Vision */}
-      <section id="vision" className="py-20">
+      <section id="vision" className="scroll-mt-32 sm:scroll-mt-40 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-accent-dark rounded-2xl p-8 sm:p-12 shadow-[0_0_20px_#26619c70]">
             <div className="text-center mb-10">
@@ -329,7 +350,7 @@ export function HomePage() {
       </section>
 
       {/* Who We Are */}
-      <section id="who-we-are" className="py-20">
+      <section id="who-we-are" className="scroll-mt-32 sm:scroll-mt-40 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560]">
             <div className="text-center mb-10">
@@ -358,7 +379,7 @@ export function HomePage() {
       </section>
 
       {/* Our Values */}
-      <section id="values" className="py-20">
+      <section id="values" className="scroll-mt-32 sm:scroll-mt-40 py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <p className="text-sm uppercase tracking-widest text-brand-light mb-3">⚖️ Our Values</p>
@@ -444,7 +465,7 @@ export function HomePage() {
       </section>
 
       {/* Join the Temple */}
-      <section id="join" className="py-20">
+      <section id="join" className="scroll-mt-32 sm:scroll-mt-40 py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto bg-accent/40 backdrop-blur-md border-2 border-neon rounded-2xl p-8 sm:p-12 shadow-[0_0_25px_#ff2d9560] text-center">
             <h2 className="text-3xl font-bold text-gray-100 mb-4">Ready to Join Us?</h2>

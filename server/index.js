@@ -309,54 +309,18 @@ async function createServer() {
     }
   });
 
-  // Dynamic sitemap
-  app.get('/sitemap.xml', async (req, res) => {
-    const baseUrl = process.env.SITE_URL || 'https://recoverysky.org';
-    const pages = [
-      '/', '/app', '/blog', '/support',
-      '/content/RecoverySky_Content/EULA',
-      '/content/RecoverySky_Content/terms',
-      '/content/RecoverySky_Content/privacy',
-      '/content/RecoverySky_Content/disclaimer',
-      '/content/RecoverySky_Content/ai_consent',
-    ];
-    let postUrls = [];
-
-    try {
-      const directusApiUrl = new URL(`/items/${DIRECTUS_COLLECTION}`, DIRECTUS_URL);
-      directusApiUrl.searchParams.append('filter[status][_eq]', 'published');
-      directusApiUrl.searchParams.append('fields', 'id,title,date_updated');
-      directusApiUrl.searchParams.append('sort', '-date_updated');
-      directusApiUrl.searchParams.append('limit', '-1');
-
-      const headers = { 'Content-Type': 'application/json' };
-      if (DIRECTUS_TOKEN) headers['Authorization'] = `Bearer ${DIRECTUS_TOKEN}`;
-
-      const response = await fetch(directusApiUrl.toString(), { headers });
-      if (response.ok) {
-        const json = await response.json();
-        postUrls = (json.data || []).map(post => {
-          const slug = post.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-          return {
-            url: `/post/${post.id}/${slug}`,
-            lastmod: post.date_updated ? new Date(post.date_updated).toISOString().split('T')[0] : undefined,
-          };
-        });
-      }
-    } catch (err) {
-      console.error('⚠️  Sitemap: failed to fetch posts:', err.message);
-    }
-
-    const urls = [
-      ...pages.map(p => `  <url>\n    <loc>${baseUrl}${p}</loc>\n    <changefreq>${p === '/' ? 'weekly' : 'monthly'}</changefreq>\n  </url>`),
-      ...postUrls.map(p => `  <url>\n    <loc>${baseUrl}${p.url}</loc>${p.lastmod ? `\n    <lastmod>${p.lastmod}</lastmod>` : ''}\n    <changefreq>monthly</changefreq>\n  </url>`),
-    ];
-
+  // Sitemap — only the homepage is published for now.
+  // Other routes still resolve via direct URL but are intentionally excluded
+  // from search-engine discovery until the temple chooses to publish them.
+  app.get('/sitemap.xml', (req, res) => {
+    const baseUrl = process.env.SITE_URL || 'https://www.templeofinannaslight.org';
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('\n')}
+  <url>
+    <loc>${baseUrl}/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
 </urlset>`;
-
     res.setHeader('Content-Type', 'application/xml');
     res.send(xml);
   });

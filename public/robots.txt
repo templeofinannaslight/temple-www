@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://recoverysky.org/sitemap.xml
+Sitemap: https://www.templeofinannaslight.org/sitemap.xml
