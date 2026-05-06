@@ -101,7 +101,7 @@ jobs:
                                                                                                                         
           eval $(ssh-agent -s)
           echo "${{ secrets.RUNNER_SSH_PRIVATE_KEY }}" | base64 -d | ssh-add -
-
+          sleep 5
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o LogLevel=ERROR \
