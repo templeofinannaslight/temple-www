@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ArrowRight, Sparkles, Users } from "lucide-react";
+import { Sparkles, Users } from "lucide-react";
+// import { ArrowRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
 import { fetchPosts } from "@/lib/api";
 import { formatDate, slugify } from "@/lib/format";
@@ -148,17 +149,81 @@ export function HomePage() {
   return (
     <div>
       <Helmet>
-        <title>Temple of 𒀭Inanna's Light</title>
+        <title>Temple of Inanna's Light | Worship of Inanna / Ishtar</title>
         <meta
           name="description"
-          content="A sanctuary for 𒀭Inanna's people — rekindling the warmth, safety, and comradery of ancient Uruk's temple complex for all who seek the Goddess's light."
+          content="A queer-affirming, trans-affirming Mesopotamian polytheist sanctuary for worshipers of the Sumerian goddess Inanna / Ishtar — reviving the warmth and comradery of ancient Uruk for all who seek Her."
         />
-        <meta property="og:title" content="Temple of 𒀭Inanna's Light" />
+        <meta
+          name="keywords"
+          content="Inanna, Ishtar, Inanna worship, Ishtar worship, Sumerian goddess, Mesopotamian polytheism, Mesopotamian paganism, Anunna-Umun, Ishtaritism, Reconstructionist Revivalist, Uruk, Unug, modern temple, queer pagan, trans pagan, LGBTQ pagan, Sumerian religion, ancient Mesopotamian religion"
+        />
+        <meta name="author" content="Temple of Inanna's Light" />
+        <meta name="robots" content="index, follow" />
+        <link rel="canonical" href="https://templeofinannaslight.org/" />
+
+        {/* Open Graph */}
+        <meta property="og:title" content="Temple of 𒀭Inanna's Light | Worship of Inanna / Ishtar" />
         <meta
           property="og:description"
-          content="A sanctuary for 𒀭Inanna's people — rekindling the light of ancient Uruk for the marginalized, the seeking, and the devoted."
+          content="The Temple of Inanna's Light is a Reconstructionist-Inspired Revivalist community for worshipers of the Sumerian goddess Inanna / Ishtar — a queer-affirming, trans-affirming Mesopotamian polytheist (Anunna-Umun) sanctuary reviving the warmth of ancient Uruk."
         />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://templeofinannaslight.org/" />
+        <meta property="og:image" content="https://templeofinannaslight.org/templeofinannaslight-banner.png" />
+        <meta property="og:image:alt" content="Temple of Inanna's Light" />
+        <meta property="og:locale" content="en_US" />
+
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Temple of Inanna's Light" />
+        <meta
+          name="twitter:description"
+          content="A queer-affirming Mesopotamian polytheist sanctuary for worshipers of Inanna / Ishtar — reviving ancient Uruk."
+        />
+        <meta name="twitter:image" content="https://templeofinannaslight.org/templeofinannaslight-banner.png" />
+        <meta name="twitter:image:alt" content="Temple of Inanna's Light" />
+
+        {/* JSON-LD: Religious Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ReligiousOrganization",
+            name: "Temple of Inanna's Light",
+            alternateName: "Temple of 𒀭Inanna's Light",
+            description:
+              "A Reconstructionist-Inspired Revivalist community for worshipers of the Sumerian goddess Inanna / Ishtar within the broader revived Mesopotamian polytheist tradition (Anunna-Umun / Ishtaritism). Queer-affirming, trans-affirming, and welcoming to all seekers.",
+            url: "https://templeofinannaslight.org/",
+            logo: "https://templeofinannaslight.org/templeofinannaslight-logo.png",
+            image: "https://templeofinannaslight.org/templeofinannaslight-banner.png",
+            sameAs: ["https://discord.com/invite/lightofinanna"],
+            founder: [
+              { "@type": "Person", name: "Entu Siri Ninkurgarra" },
+              { "@type": "Person", name: "Entu Meadow" },
+            ],
+            knowsAbout: [
+              "Inanna",
+              "Ishtar",
+              "Sumerian religion",
+              "Mesopotamian polytheism",
+              "Anunna-Umun",
+              "Ishtaritism",
+              "Ancient Mesopotamia",
+              "Sumerian mythology",
+              "Mesopotamian history",
+              "Ancient Near East",
+              "Cuneiform",
+              "Sumerian cuneiform",
+              "Mesopotamian cuneiform",
+              "Sumerian literature",
+              "Mesopotamian literature",
+              "Sumerian culture",
+              "Mesopotamian culture",
+              "Sumerian civilization",
+              "Mesopotamian civilization"
+            ],
+          })}
+        </script>
       </Helmet>
 
       {/* Hero */}

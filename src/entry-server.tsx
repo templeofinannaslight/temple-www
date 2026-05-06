@@ -22,6 +22,7 @@ export function render(url: string, ssrData: SSRData = {}) {
     helmet?.title?.toString(),
     helmet?.meta?.toString(),
     helmet?.link?.toString(),
+    helmet?.script?.toString(),
   ]
     .filter(Boolean)
     .join("\n    ");

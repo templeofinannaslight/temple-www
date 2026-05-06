@@ -26,7 +26,7 @@ function App() {
   return (
     <RootLayout>
       <Helmet>
-        <meta property="og:site_name" content="RecoverySky" />
+        <meta property="og:site_name" content="Temple of Inanna's Light" />
       </Helmet>
       <PageviewTracker />
       <Routes>
