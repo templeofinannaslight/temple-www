@@ -88,7 +88,7 @@ export function Header() {
                 𒂍𒃲 𒄑𒉢𒈾 𒀭𒈹𒆤
               </p>
               <p className="text-xl sm:text-3xl text-white italic whitespace-nowrap">
-                E<sub>2</sub>-gal Ŋes-ŋu<sub>11</sub> 𒀭Inanna-ke<sub>4</sub>
+                E<sub>2</sub>-gal Ŋes-ŋu<sub>11</sub>-na 𒀭Inanna-ke<sub>4</sub>
               </p>
             </div>
           </Link>

@@ -137,7 +137,7 @@ export function HomePage() {
         <title>Temple of Inanna's Light | Worship of Inanna / Ishtar</title>
         <meta
           name="description"
-          content="A queer-affirming, trans-affirming Mesopotamian polytheist sanctuary for worshipers of the Sumerian goddess Inanna / Ishtar — reviving the warmth and comradery of ancient Uruk for all who seek Her."
+          content="A queer-affirming, trans-affirming Mesopotamian polytheist sanctuary for worshipers of Inanna / Ishtar — receiving the warmth of ancient Uruk ziggurat Eanna."
         />
         <meta
           name="keywords"
