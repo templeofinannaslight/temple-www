@@ -407,7 +407,10 @@ async function createServer() {
         .replace('<!--ssr-head-->', head)
         .replace('<!--ssr-outlet-->', html)
         .replace('</head>', `<script>window.__SSR_DATA__=${safeJsonStringify(ssrData)}</script>\n</head>`);
-      res.status(200).set({ 'Content-Type': 'text/html' }).send(page);
+      res.status(200).set({
+        'Content-Type': 'text/html',
+        'Cache-Control': 'public, max-age=60, s-maxage=60',
+      }).send(page);
     });
   } else {
     // Dev: Vite SSR middleware
