@@ -105,7 +105,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no \
               -o UserKnownHostsFile=/dev/null \
               -o LogLevel=ERROR \
-              ec2-user@klotho.prod.rso "swarm restart ${{ env.STACK }} ${{ github.event.repository.name }}"
+              ec2-user@klotho.prod.rso "swarm bounce ${{ env.STACK }} ${{ github.event.repository.name }}"
 
           eval $(ssh-agent -k)
         
