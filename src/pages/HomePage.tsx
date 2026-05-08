@@ -237,6 +237,7 @@ export function HomePage() {
           <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
             <a
               href="#join"
+              onClick={() => trackEvent("hero_cta_click", { target: "join" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               <Users className="w-5 h-5" />
@@ -244,6 +245,7 @@ export function HomePage() {
             </a>
             <a
               href="#mission"
+              onClick={() => trackEvent("hero_cta_click", { target: "mission" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
             >
               <Target className="w-5 h-5" />
@@ -251,6 +253,7 @@ export function HomePage() {
             </a>
             <a
               href="#vision"
+              onClick={() => trackEvent("hero_cta_click", { target: "vision" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
             >
               <Eye className="w-5 h-5" />
@@ -258,6 +261,7 @@ export function HomePage() {
             </a>
             <a
               href="#who-we-are"
+              onClick={() => trackEvent("hero_cta_click", { target: "who-we-are" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
             >
               <Heart className="w-5 h-5" />
@@ -265,6 +269,7 @@ export function HomePage() {
             </a>
             <a
               href="#values"
+              onClick={() => trackEvent("hero_cta_click", { target: "values" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent/25 text-gray-100 font-semibold rounded-lg border-2 border-accent-dark hover:border-accent-light hover:shadow-[0_0_30px_#26619ca0] transition-all"
             >
               <Sparkles className="w-5 h-5" />
@@ -423,7 +428,7 @@ export function HomePage() {
               href="https://discord.com/invite/lightofinanna"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => trackEvent("discord_join_click")}
+              onClick={() => trackEvent("discord_join_click", { location: "join_section" })}
               className="inline-flex items-center gap-2 px-8 py-3.5 bg-brand text-white font-semibold rounded-lg border-2 border-neon shadow-[0_0_20px_#ff2d9570] hover:shadow-[0_0_35px_#ff2d95a0] transition-all"
             >
               <Users className="w-5 h-5" />
