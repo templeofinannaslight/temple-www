@@ -14,7 +14,6 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@auth0/auth0-react": "~2.15.0",
     "@directus/sdk": "^20.1.0",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/typography": "^0.5.19",
