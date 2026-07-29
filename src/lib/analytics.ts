@@ -1,15 +1,31 @@
-function sendToServer(payload: Record<string, unknown>) {
-  if (typeof window === "undefined") return;
+const UMAMI_URL = (import.meta.env.VITE_UMAMI_URL || "").replace(/\/$/, "");
+const UMAMI_WEBSITE_ID = import.meta.env.VITE_UMAMI_WEBSITE_ID || "";
 
-  const body = JSON.stringify(payload);
+// Posts a single event directly to Umami's public /api/send endpoint.
+// Uses the public website ID only — no secret key. Umami infers pageview
+// vs. custom event from the presence of `name` in the payload.
+function send(fields: Record<string, unknown>) {
+  if (typeof window === "undefined") return;
+  if (!UMAMI_URL || !UMAMI_WEBSITE_ID) return; // no-op if unconfigured (e.g. some dev envs)
+
+  const body = JSON.stringify({
+    type: "event",
+    payload: {
+      website: UMAMI_WEBSITE_ID,
+      hostname: window.location.hostname,
+      ...fields,
+    },
+  });
+
+  const endpoint = `${UMAMI_URL}/api/send`;
 
   if (navigator.sendBeacon) {
     const blob = new Blob([body], { type: "application/json" });
-    navigator.sendBeacon("/api/track", blob);
+    navigator.sendBeacon(endpoint, blob);
     return;
   }
 
-  fetch("/api/track", {
+  fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body,
@@ -29,10 +45,10 @@ function basePayload() {
 
 export function trackEvent(name: string, data?: Record<string, unknown>) {
   if (typeof window === "undefined") return;
-  sendToServer({ ...basePayload(), name, data });
+  send({ ...basePayload(), name, ...(data ? { data } : {}) });
 }
 
 export function trackPageview() {
   if (typeof window === "undefined") return;
-  sendToServer(basePayload());
+  send(basePayload());
 }
