@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.templeofinannaslight.org/sitemap.xml
+Sitemap: https://templeofinannaslight.org/sitemap.xml

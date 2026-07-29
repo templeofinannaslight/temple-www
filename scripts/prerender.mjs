@@ -44,13 +44,17 @@ async function main() {
     console.log(`✓ prerendered ${route} → ${path.relative(clientDir, outPath)}`);
   }
 
-  // Static sitemap — homepage only, matching the current dynamic route's output.
+  // Static sitemap — one <url> entry per prerendered route.
+  const sitemapUrls = ROUTES.map((route) => {
+    const loc = route === "/" ? `${SITE_URL}/` : `${SITE_URL}${route}`;
+    return `  <url>
+    <loc>${loc}</loc>
+    <changefreq>weekly</changefreq>
+  </url>`;
+  }).join("\n");
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${SITE_URL}/</loc>
-    <changefreq>weekly</changefreq>
-  </url>
+${sitemapUrls}
 </urlset>`;
   fs.writeFileSync(path.join(clientDir, "sitemap.xml"), sitemap, "utf-8");
   console.log("✓ wrote sitemap.xml");
