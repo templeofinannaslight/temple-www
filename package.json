@@ -9,6 +9,7 @@
     "build": "tsc && pnpm build:client && pnpm build:server",
     "build:client": "vite build --outDir dist/client --ssrManifest",
     "build:server": "NODE_ENV=production vite build --ssr src/entry-server.tsx --outDir dist/server --mode production",
+    "prerender": "node scripts/prerender.mjs",
     "start": "NODE_ENV=production node server/index.js",
     "lint": "eslint ."
   },
