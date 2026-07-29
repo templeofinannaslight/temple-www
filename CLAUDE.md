@@ -15,6 +15,7 @@ pnpm dev        # Single Express server (SSR) on port 3001 with Vite middleware
 pnpm build      # tsc + build:client + build:server
 pnpm build:client  # Vite client bundle → dist/client (with ssrManifest)
 pnpm build:server  # Vite SSR bundle of src/entry-server.tsx → dist/server
+pnpm prerender   # Render / /app /support /resources to static HTML (+ 404.html SPA shell) in dist/client; run after build
 pnpm start      # NODE_ENV=production node server/index.js
 pnpm lint       # ESLint
 pnpm actions    # Refresh shared Forgejo actions in .forgejo/actions
@@ -109,13 +110,23 @@ Dark theme: `bg-gray-950` base, `border-gray-800`, `text-gray-100/300/500`. shad
 | `UMAMI_WEBSITE_ID` | Server | Umami website ID — without this `/api/track` is a no-op |
 | `VITE_API_URL` | Client | Frontend API base (default `/api`); only relevant if you ever split hosts |
 
-## Docker / Deploy
+## Deploy (GitHub Pages — static)
 
-```bash
-docker compose up -d --build
-```
+The production site deploys as a **pure static site** on GitHub Pages via a
+GitHub Actions workflow (`.github/workflows/pages.yml`), which runs
+`pnpm build && pnpm prerender` and publishes `dist/client`. There is **no
+runtime backend** in production: the four marketing routes (`/`, `/app`,
+`/support`, `/resources`) are prerendered to static HTML by
+`scripts/prerender.mjs`; any other path is served `404.html` (a SPA shell)
+and client-routed; and analytics posts directly from the browser to Umami.
+The apex custom domain (`templeofinannaslight.org`) is set via `public/CNAME`.
+See `docs/github-pages-setup.md` for repo settings, env vars, and DNS.
 
-Single container (`recoverysky-blog`) on the external `recoverysky` Docker network. Healthcheck hits `/health`. The container expects `/etc/pki/tls/certs/ca-bundle.crt` mounted into `/container/ca-bundle.crt` and `NODE_EXTRA_CA_CERTS` set, because Directus is reached over an internal CA. Deployed via Forgejo CI (`.forgejo/workflows/make.yml`) to AWS ECR; the live branch is `prod`.
+The blog/Directus code is a dormant **dead scaffold** (not wired to a live
+CMS). `server/index.js` (Express SSR + Directus proxy) is retained for
+**local dev only** (`pnpm dev`); it is not used in production.
+
+The previous Docker/Swarm/ECR/Forgejo pipeline is archived under `_archive/`.
 
 ## Path Alias
 
