@@ -54,6 +54,20 @@ async function main() {
 </urlset>`;
   fs.writeFileSync(path.join(clientDir, "sitemap.xml"), sitemap, "utf-8");
   console.log("✓ wrote sitemap.xml");
+
+  // SPA fallback for GitHub Pages. Pages serves this file for any path that
+  // has no static file (dead blog scaffold, deep links). Empty #root and
+  // empty head so the client boots fresh — no prerendered markup means no
+  // hydration mismatch — and BrowserRouter renders the route for the real URL.
+  const notFound = template
+    .replace("<!--ssr-head-->", "")
+    .replace("<!--ssr-outlet-->", "")
+    .replace(
+      "</head>",
+      `<script>window.__SSR_DATA__=${safeJsonStringify({})}</script>\n</head>`
+    );
+  fs.writeFileSync(path.join(clientDir, "404.html"), notFound, "utf-8");
+  console.log("✓ wrote 404.html");
 }
 
 main().catch((err) => {
