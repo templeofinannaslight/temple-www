@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**RecoverySky** marketing + blog site (`recoverysky.org`) — Vite + React + TypeScript with **server-side rendering**, served by an Express app that also proxies a Directus CMS at `https://content.rso`. Despite the `package.json` name `recoverysky-blog`, this is the full marketing site (home, app, support, resources, legal docs) plus the blog.
+**Temple of Inanna's Light** site (`templeofinannaslight.org`) — Vite + React + TypeScript. In **production** it deploys as a **pure static site on GitHub Pages** (build-time prerendered, no backend). In **local dev** it runs through an Express server doing true SSR with Vite middleware. Despite the `package.json` name `recoverysky-blog`, this was forked from the RecoverySky blog scaffold and repurposed for the Temple; the blog/CMS parts are now **dormant dead scaffold**.
 
-> The repo `README.md` describes a Next.js setup — it is stale and does not reflect the current Vite/Express architecture.
+> See `README.md` for setup and a "where things stand" handoff for the next dev.
 
 ## Commands
 
@@ -25,9 +25,15 @@ There are **no** `dev:server` / `dev:client` scripts and **no** test suite. Visi
 
 ## Architecture
 
-### Single Express Server with SSR
+> **Dev vs prod.** The Express server described below is the **local-dev**
+> server (`pnpm dev`). **Production is a static GitHub Pages deploy** with no
+> backend — see [Deploy](#deploy-github-pages--static). Both share the same
+> React app and `render()`; the Directus/Umami proxies described here are
+> dev-only and dormant.
 
-`server/index.js` (port 3001) is the only process. It:
+### Single Express Server with SSR (local dev)
+
+`server/index.js` (port 3001) is the dev process. It:
 
 1. **Proxies Directus** (`/api/*`) — injects `DIRECTUS_TOKEN` server-side and rewrites Directus asset URLs (including bare `/assets/<uuid>`) to `/api/assets/`.
 2. **Server-renders React** — in dev, loads `src/entry-server.tsx` via Vite SSR middleware; in prod, imports the prebuilt `dist/server/entry-server.js` and serves `dist/client/index.html` as the template.
@@ -76,12 +82,16 @@ A `<PageviewTracker>` listens for route changes and fires Umami events via `src/
 
 ### Analytics
 
-- `src/lib/analytics.ts` posts to `/api/track` using `navigator.sendBeacon` (with `fetch` fallback).
-- `server/index.js` `/api/track` forwards to Umami at `UMAMI_URL` using `UMAMI_X_API_KEY` + `UMAMI_WEBSITE_ID`. If those env vars are missing the endpoint silently 204s — useful in dev.
+- `src/lib/analytics.ts` posts **directly from the browser** to Umami's public `/api/send` using `VITE_UMAMI_URL` + `VITE_UMAMI_WEBSITE_ID` (the **public** website ID — no secret key), via `navigator.sendBeacon` with a `fetch` fallback. If the vars are unset it's a no-op.
+- `server/index.js` still has a legacy `/api/track` proxy for dev parity, but the client no longer calls it, and `UMAMI_X_API_KEY` is **not** used by the app.
 
-### Auth0
+### Auth0 (removed)
 
-`src/entry-client.tsx` wraps the app in `<Auth0Provider>` with **hard-coded** `domain` and `clientId` (`meetingmaker.us.auth0.com`). SSR (`entry-server.tsx`) does **not** include the provider — anything that reads Auth0 state must be hydration-safe.
+Auth0 was unused scaffold and has been **removed** — its provider threw `auth0-spa-js must run on a secure origin` on non-HTTPS origins and crashed hydration (blank page). There is no auth in the app. Re-add a provider (hydration-safe, secure origin only) only if you build an actual member area. The only remaining refs are commented-out lines in `Header.tsx`.
+
+### Base path
+
+Vite `base` comes from `process.env.BASE_PATH` (default `/`). `src/lib/asset.ts` prefixes public-asset URLs with `import.meta.env.BASE_URL`, and the routers (`entry-client.tsx` / `entry-server.tsx`) set their basename from it, so the app works at a root domain **or** a GitHub Pages project sub-path. Keep it `/` for the apex custom domain; set `BASE_PATH=/<repo>/` only for project-page hosting.
 
 ## Brand & Styling
 
@@ -97,18 +107,24 @@ Dark theme: `bg-gray-950` base, `border-gray-800`, `text-gray-100/300/500`. shad
 
 ## Environment Variables
 
-| Variable | Scope | Description |
-|---|---|---|
-| `DIRECTUS_URL` | Server | Directus base URL (defaults to `http://apps_directus`) |
-| `DIRECTUS_TOKEN` | Server | Bearer token; warns and falls back to public access if missing |
-| `DIRECTUS_COLLECTION` | Server | Blog collection name; defaults to `Mikkis_Mess` in code, `RecoverySky_Blog` in compose |
-| `PORT` | Server | Express port (default 3001) |
-| `CORS_ORIGIN` | Server | Allowed origin (default `http://localhost:5173`) |
-| `SITE_URL` | Server | Base URL used in `/sitemap.xml` (default `https://recoverysky.org`) |
-| `UMAMI_URL` | Server | Umami base URL (default `https://umami.recoverysky.app`) |
-| `UMAMI_X_API_KEY` | Server | Umami API key — without this `/api/track` is a no-op |
-| `UMAMI_WEBSITE_ID` | Server | Umami website ID — without this `/api/track` is a no-op |
-| `VITE_API_URL` | Client | Frontend API base (default `/api`); only relevant if you ever split hosts |
+**Client (build-time, `VITE_`-prefixed, public/safe):**
+
+| Variable | Description |
+|---|---|
+| `VITE_UMAMI_URL` | Umami server (e.g. `https://umami.recoverysky.app`) |
+| `VITE_UMAMI_WEBSITE_ID` | Public Umami website ID (safe to expose) |
+| `BASE_PATH` | Vite base path; defaults to `/`. Set to `/<repo>/` only for GitHub Pages *project*-page hosting |
+
+In CI these come from the workflow (`VITE_UMAMI_*` inline; `BASE_PATH` from an optional repo variable). For local dev put `VITE_UMAMI_*` in a git-ignored `.env`.
+
+**Server (local dev only — read by `server/index.js`, unused in production):**
+
+| Variable | Description |
+|---|---|
+| `DIRECTUS_URL` / `DIRECTUS_TOKEN` / `DIRECTUS_COLLECTION` | Dormant Directus proxy (blog scaffold) |
+| `PORT` | Express port (default 3001) |
+| `SITE_URL` | Base URL for the dev `/sitemap.xml` (default `https://www.templeofinannaslight.org`) |
+| `UMAMI_URL` / `UMAMI_X_API_KEY` / `UMAMI_WEBSITE_ID` | Legacy dev-only `/api/track` proxy (client no longer uses it) |
 
 ## Deploy (GitHub Pages — static)
 
