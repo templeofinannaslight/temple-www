@@ -5,6 +5,7 @@ import { Sparkles, Users, Target, Eye, Heart } from "lucide-react";
 // import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { trackEvent } from "@/lib/analytics";
+import { asset } from "@/lib/asset";
 
 const MISSION_QUOTES = [
   {
@@ -215,7 +216,7 @@ export function HomePage() {
       <section className="relative pt-12 sm:pt-16 pb-24 sm:pb-32">
         <div className="container mx-auto px-4 text-center">
           <img
-            src="/templeofinannaslight-logo.png"
+            src={asset("/templeofinannaslight-logo.png")}
             alt="Temple of Inanna's Light"
             className="h-[381px] sm:h-[475px] w-auto mx-auto mb-[3px]"
           />

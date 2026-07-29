@@ -1,5 +1,6 @@
 // import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { asset } from "@/lib/asset";
 // import { useAuth0 } from "@auth0/auth0-react";
 // import { LogIn, LogOut, User } from "lucide-react";
 // import { trackEvent } from "@/lib/analytics";
@@ -76,7 +77,7 @@ export function Header() {
         <div className="flex items-center justify-between py-4">
           <Link to="/" className="flex flex-col sm:flex-row sm:flex-wrap items-center justify-center gap-2 sm:gap-5 max-w-full min-w-0">
             <img
-              src="/templeofinannaslight-banner.png"
+              src={asset("/templeofinannaslight-banner.png")}
               alt="Temple of Inanna's Light"
               className="w-full max-w-xs sm:w-auto sm:max-w-none sm:max-h-24 h-auto rounded-xl"
             />

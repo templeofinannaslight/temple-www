@@ -30,6 +30,9 @@ jobs:
       - name: Build and prerender
         run: pnpm build && pnpm prerender
         env:
+          # Empty for the apex custom domain (base '/'); set the BASE_PATH repo
+          # variable to '/<repo>/' when serving from a GitHub Pages project page.
+          BASE_PATH: ${{ vars.BASE_PATH }}
           VITE_UMAMI_URL: https://umami.recoverysky.app
           VITE_UMAMI_WEBSITE_ID: 1701310e-bc12-4c48-b034-9aab2951892b
       - run: touch dist/client/.nojekyll

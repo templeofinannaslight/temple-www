@@ -30,7 +30,7 @@ hydrateRoot(
           ...(AUTH0_SCOPE ? { scope: AUTH0_SCOPE } : {}),
         }}
       >
-        <BrowserRouter>
+        <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "") || undefined}>
           <SSRDataProvider data={ssrData}>
             <App />
           </SSRDataProvider>

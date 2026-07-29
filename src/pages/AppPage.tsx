@@ -2,6 +2,7 @@ import { Helmet } from "react-helmet-async";
 import { Video, ClipboardCheck, Bell, Smartphone, Globe, ArrowRight } from "lucide-react";
 import logo from "@/assets/recoverysky-signature-white.png";
 import { trackEvent } from "@/lib/analytics";
+import { asset } from "@/lib/asset";
 
 const FEATURES = [
   {
@@ -92,12 +93,12 @@ export function AppPage() {
             <div className="flex flex-col md:flex-row items-center gap-10">
               <div className="flex gap-4 justify-center shrink-0">
                 <img
-                  src="/app-screenshots/app-auth.png"
+                  src={asset("/app-screenshots/app-auth.png")}
                   alt="Anonymous login"
                   className="w-48 rounded-2xl border-2 border-accent-dark shadow-[0_0_20px_#26619c70]"
                 />
                 <img
-                  src="/app-screenshots/zoom-auth.png"
+                  src={asset("/app-screenshots/zoom-auth.png")}
                   alt="Zoom connection"
                   className="w-48 rounded-2xl border-2 border-accent-dark shadow-[0_0_20px_#26619c70]"
                 />
@@ -129,7 +130,7 @@ export function AppPage() {
                   {screenshots.map((src) => (
                     <img
                       key={src}
-                      src={src}
+                      src={asset(src)}
                       alt={title}
                       className="w-48 rounded-2xl border-2 border-accent-dark shadow-[0_0_20px_#26619c70]"
                     />
@@ -165,7 +166,7 @@ export function AppPage() {
             ].map((src) => (
               <img
                 key={src}
-                src={src}
+                src={asset(src)}
                 alt="App screenshot"
                 className="w-44 sm:w-52 rounded-2xl border-2 border-accent-dark shadow-[0_0_20px_#26619c70] hover:border-accent-light hover:shadow-[0_0_35px_#26619ca0] transition-all"
               />

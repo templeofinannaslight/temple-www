@@ -7,9 +7,15 @@ import App from "./App";
 export function render(url: string, ssrData: SSRData = {}) {
   const helmetContext: { helmet?: any } = {};
 
+  // Support a configurable base path (GitHub Pages project pages). `url` is the
+  // app-relative route (e.g. "/app"); StaticRouter needs the location to include
+  // the basename, which it then strips before matching.
+  const basename = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const location = basename ? `${basename}${url}` : url;
+
   const html = renderToString(
     <HelmetProvider context={helmetContext}>
-      <StaticRouter location={url}>
+      <StaticRouter location={location} basename={basename || undefined}>
         <SSRDataProvider data={ssrData}>
           <App />
         </SSRDataProvider>
